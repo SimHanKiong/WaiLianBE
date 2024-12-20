@@ -17,10 +17,10 @@ class CrudBase(Generic[ModelType]):
     def read_all(
         self,
         db: Session,
+        *args,
         skip: int = 0,
         limit: int = 1000,
         sort_by: str = "created_on",
-        *args,
     ) -> list[ModelType]:
         sort_col = getattr(self.model, sort_by.lstrip("-"))
         sort_order = desc(sort_col) if sort_by.startswith("-") else asc(sort_col)

@@ -1,4 +1,3 @@
-from uuid import UUID
 from app.schemas.base import BaseOut, BaseIn
 
 
@@ -10,7 +9,7 @@ class SchoolBase(BaseIn):
 
 
 class SchoolCreate(SchoolBase):
-    id: UUID | None = None
+    pass
 
 
 class SchoolUpdate(SchoolBase):
