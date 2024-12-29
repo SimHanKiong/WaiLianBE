@@ -1,4 +1,5 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import UniqueConstraint
+from sqlalchemy.orm import Mapped
 import datetime
 
 from app.models.base import Base
@@ -8,11 +9,13 @@ from app.models.route import RouteType
 class Location(Base):
     __tablename__ = "location"
 
-    address: Mapped[str] = mapped_column(nullable=False)
-    time: Mapped[str] = mapped_column(nullable=False)
-    type: Mapped[RouteType] = mapped_column(nullable=False)
-    time_reached: Mapped[datetime.time] = mapped_column(nullable=True)
-    position: Mapped[float] = mapped_column(nullable=True)
+    address: Mapped[str]
+    time: Mapped[str]
+    type: Mapped[RouteType]
+    time_reached: Mapped[datetime.time | None]
+    position: Mapped[float | None]
+
+    __table_args__ = (UniqueConstraint("address", "type", name="uq_address_type"),)
 
     def __repr__(self) -> str:
         return f"Location: {self.address}, {self.type}"

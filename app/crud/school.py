@@ -1,4 +1,4 @@
-from app.crud.base import CrudBase
+from app.crud.base import CRUDBase
 from app.models import School
 
-school_crud = CrudBase(model=School)
+school_crud = CRUDBase(model=School)
