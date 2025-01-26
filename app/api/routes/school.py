@@ -22,7 +22,7 @@ def read_schools(
 @router.get("/{id:uuid}", response_model=SchoolOut)
 def read_school(db: SessionDep, id: UUID):
     school = school_crud.read_one(db, school_crud.model.id == id)
-    return raise_missing_exception(school, 'School')
+    return raise_missing_exception(school, "School")
 
 
 @router.post("/", response_model=SchoolOut)
@@ -38,7 +38,7 @@ def create_school(db: SessionDep, school_in: SchoolCreate):
 def update_school(db: SessionDep, id: UUID, school_in: SchoolUpdate):
     try:
         school = school_crud.update(db, id, school_in)
-        return raise_missing_exception(school, 'School') 
+        return raise_missing_exception(school, "School")
     except IntegrityError as e:
         raise_database_exception(e, "School")
 
@@ -46,4 +46,4 @@ def update_school(db: SessionDep, id: UUID, school_in: SchoolUpdate):
 @router.delete("/{id:uuid}", response_model=SchoolOut)
 def delete_school(db: SessionDep, id: UUID):
     school = school_crud.delete(db, id)
-    return raise_missing_exception(school, 'School')
+    return raise_missing_exception(school, "School")

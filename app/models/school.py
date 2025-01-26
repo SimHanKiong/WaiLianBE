@@ -10,6 +10,7 @@ class School(Base):
     initial: Mapped[str]
     arrival_time: Mapped[str]
     departure_time: Mapped[str]
+    email: Mapped[str | None]
 
     def __repr__(self) -> str:
         return f"School: {self.name}"

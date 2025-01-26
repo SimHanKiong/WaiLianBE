@@ -1,3 +1,4 @@
+from pydantic import EmailStr
 from app.schemas.base import BaseOut, BaseIn
 
 
@@ -6,6 +7,7 @@ class SchoolBase(BaseIn):
     initial: str
     arrival_time: str
     departure_time: str
+    email: EmailStr | None
 
 
 class SchoolCreate(SchoolBase):
@@ -17,6 +19,7 @@ class SchoolUpdate(SchoolBase):
     initial: str | None = None
     arrival_time: str | None = None
     departure_time: str | None = None
+    email: EmailStr | None = None
 
 
 class SchoolOut(SchoolBase, BaseOut):
