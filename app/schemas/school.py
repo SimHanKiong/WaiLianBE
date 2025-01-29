@@ -8,6 +8,7 @@ class SchoolBase(BaseIn):
     arrival_time: str
     departure_time: str
     email: EmailStr | None
+    is_final_year: bool
 
 
 class SchoolCreate(SchoolBase):
@@ -20,6 +21,7 @@ class SchoolUpdate(SchoolBase):
     arrival_time: str | None = None
     departure_time: str | None = None
     email: EmailStr | None = None
+    is_final_year: bool | None = None
 
 
 class SchoolOut(SchoolBase, BaseOut):
