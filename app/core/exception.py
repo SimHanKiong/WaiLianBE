@@ -24,7 +24,7 @@ def raise_database_exception(exc: IntegrityError, model: str):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Duplicate {model} detected.",
         )
-    raise HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        detail="A database integrity error occurred.",
-    )
+    # raise HTTPException(
+    #     status_code=status.HTTP_400_BAD_REQUEST,
+    #     detail="A database integrity error occurred.",
+    # )

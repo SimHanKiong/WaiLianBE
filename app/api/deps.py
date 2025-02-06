@@ -7,7 +7,7 @@ from app.core.database import engine
 
 
 def get_db() -> Generator[Session, None, None]:
-    with Session(engine) as session:
+    with Session(engine, expire_on_commit=False) as session:
         yield session
 
 

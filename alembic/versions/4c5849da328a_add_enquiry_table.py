@@ -26,7 +26,7 @@ def upgrade() -> None:
     sa.Column('block', sa.String(), nullable=False),
     sa.Column('remark', sa.String(), nullable=False),
     sa.Column('fare', sa.Integer(), nullable=False),
-    sa.Column('status', sa.Enum('TBC', 'SENT', 'RECEIVED', name='enquirystatus'), nullable=True),
+    sa.Column('status', sa.Enum('TBC', 'OPTION', 'SENT', 'REGISTRATION', 'REJECTED', name='enquirystatus'), nullable=True),
     sa.Column('school_id', sa.UUID(), nullable=True),
     sa.Column('am_location_id', sa.UUID(), nullable=True),
     sa.Column('pm_location_id', sa.UUID(), nullable=True),

@@ -10,18 +10,27 @@ from app.models.school import School
 
 class EnquiryStatus(enum.Enum):
     TBC = "To Be Confirmed"
+    OPTION = "Option"
     SENT = "Enquiry Sent"
-    RECEIVED = "Registration Received"
+    REGISTRATION = "Registration"
+    REJECTED = "Rejected"
 
 
 class Enquiry(Base):
     __tablename__ = "enquiry"
 
-    date: Mapped[str]
-    phone_no: Mapped[str]
+    email: Mapped[str]
     block: Mapped[str]
     remark: Mapped[str]
     fare: Mapped[int]
+    home_postal_code: Mapped[str]
+    home_unit_no: Mapped[str]
+    home_address: Mapped[str]
+    am_postal_code: Mapped[str]
+    am_address: Mapped[str]
+    pm_postal_code: Mapped[str]
+    pm_address: Mapped[str]
+    year: Mapped[int]
     status: Mapped[EnquiryStatus | None]
 
     school_id: Mapped[UUID | None] = mapped_column(
@@ -40,4 +49,4 @@ class Enquiry(Base):
     pm_location: Mapped[Location | None] = relationship(foreign_keys=[pm_location_id])
 
     def __repr__(self) -> str:
-        return f"Enquiry: {self.phone_no}"
+        return f"Enquiry: {self.email}"
