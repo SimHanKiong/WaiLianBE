@@ -1,3 +1,4 @@
+from uuid import UUID
 from pydantic import EmailStr
 from app.schemas.base import BaseOut, BaseIn
 
@@ -12,6 +13,7 @@ class SchoolBase(BaseIn):
 
 
 class SchoolCreate(SchoolBase):
+    id: UUID
     pass
 
 
