@@ -30,7 +30,6 @@ class EnquiryBase(BaseIn):
 
 
 class EnquiryCreate(EnquiryBase):
-    id: UUID
     pass
 
 
