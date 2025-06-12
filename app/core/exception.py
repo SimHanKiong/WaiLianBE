@@ -1,30 +1,22 @@
-from fastapi import HTTPException, status
-from sqlalchemy.exc import IntegrityError
-from psycopg import errors
+class IntegrityException(Exception):
+    def __init__(self, model_name: str):
+        self.model_name = model_name
 
-from app.crud.base import ModelType
-
-
-def raise_missing_exception(obj: ModelType | None, model: str):
-    if not obj:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"{model} not found."
-        )
-    return obj
+    def __str__(self):
+        return f"A related record of {self.model_name} is missing."
 
 
-def raise_database_exception(exc: IntegrityError, model: str):
-    if isinstance(exc.orig, errors.ForeignKeyViolation):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"A related record of {model} is missing.",
-        )
-    elif isinstance(exc.orig, errors.UniqueViolation):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Duplicate {model} detected.",
-        )
-    # raise HTTPException(
-    #     status_code=status.HTTP_400_BAD_REQUEST,
-    #     detail="A database integrity error occurred.",
-    # )
+class UniqueViolationException(Exception):
+    def __init__(self, model_name: str):
+        self.model_name = model_name
+
+    def __str__(self):
+        return f"Duplicate {self.model_name} detected."
+
+
+class MissingRecordException(Exception):
+    def __init__(self, model_name: str):
+        self.model_name = model_name
+
+    def __str__(self):
+        return f"{self.model_name} not found."

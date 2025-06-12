@@ -3,7 +3,9 @@ from uuid import UUID
 from pydantic import BaseModel
 from sqlalchemy import asc, desc, select
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
+from app.core.exception import IntegrityException, UniqueViolationException
 from app.models import Base
 
 
@@ -44,10 +46,16 @@ class CRUDBase(Generic[ModelType]):
             else obj_in
         )
         db_obj = self.model(**obj_data)
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+
+        try:
+            db.add(db_obj)
+            db.commit()
+            db.refresh(db_obj)
+            return db_obj
+        except IntegrityError:
+            raise IntegrityException(model_name=self.model.__name__)
+        except UniqueViolationException:
+            raise IntegrityException(model_name=self.model.__name__)
 
     def update(
         self, db: Session, id: UUID, obj_in: BaseModel | dict
@@ -67,10 +75,15 @@ class CRUDBase(Generic[ModelType]):
         for field, value in obj_data.items():
             setattr(db_obj, field, value)
 
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        try:
+            db.add(db_obj)
+            db.commit()
+            db.refresh(db_obj)
+            return db_obj
+        except IntegrityError:
+            raise IntegrityException(model_name=self.model.__name__)
+        except UniqueViolationException:
+            raise IntegrityException(model_name=self.model.__name__)
 
     def delete(self, db: Session, id: UUID) -> ModelType | None:
         query = select(self.model).where(self.model.id == id)

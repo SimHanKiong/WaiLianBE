@@ -26,21 +26,21 @@ class CRUDEnquiry(CRUDBase[Enquiry]):
             }
         )
         return super().create(db, enquiry_dict)
-    
+
     def update(self, db: Session, id: UUID, enquiry_in: EnquiryUpdate) -> Enquiry:
         enquiry_dict = enquiry_in.model_dump(exclude_unset=True)
 
         if enquiry_in.home_postal_code:
             home_address = get_address(enquiry_in.home_postal_code)
-            enquiry_dict['home_address'] = home_address
+            enquiry_dict["home_address"] = home_address
 
         if enquiry_in.am_postal_code:
             am_address = get_address(enquiry_in.am_postal_code)
-            enquiry_dict['am_address'] = am_address
+            enquiry_dict["am_address"] = am_address
 
         if enquiry_in.pm_postal_code:
             pm_address = get_address(enquiry_in.pm_postal_code)
-            enquiry_dict['pm_address'] = pm_address
+            enquiry_dict["pm_address"] = pm_address
 
         return super().update(db, id, enquiry_dict)
 
