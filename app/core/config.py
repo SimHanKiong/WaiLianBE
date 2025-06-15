@@ -23,6 +23,7 @@ class Settings(BaseSettings):
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
         )
-
+    
+    REVERSIBLE_ENCRYPTION_KEY: str
 
 settings = Settings()

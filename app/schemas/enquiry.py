@@ -18,6 +18,7 @@ class EnquiryBase(BaseIn):
     pm_postal_code: str
     school_id: UUID
     status: EnquiryStatus | None
+    email_sent: bool
     am_location_id: UUID | None
     pm_location_id: UUID | None
     year: int
@@ -43,6 +44,7 @@ class EnquiryUpdate(EnquiryBase):
     am_postal_code: str | None = None
     pm_postal_code: str | None = None
     status: EnquiryStatus | None = None
+    email_sent: bool | None = None
     school_id: UUID | None = None
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
@@ -50,7 +52,7 @@ class EnquiryUpdate(EnquiryBase):
 
 
 class EnquiryOut(EnquiryBase, BaseOut):
-    school: SchoolOut | None
+    school: SchoolOut
     am_location: LocationOut | None
     pm_location: LocationOut | None
     home_address: str

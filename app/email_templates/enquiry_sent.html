@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>School Bus Enquiry Sent</title>
+  </head>
+  <body>
+    <div>
+      <div>Dear Parents / Guardian,</div>
+      <br />
+      <h2><b>School Bus Enquiries</b></h2>
+      <br />
+      <div>{{ home_address }}</div>
+      <br />
+      {% if pickup_address %}
+      <div><b>Pick Up Point:</b> {{ pickup_address }}</div>
+      <div><b>Pick Up Time:</b> around {{ pickup_time }}</div>
+      <div>(School bus has to reach school at {{ arrival_time }})</div>
+      <br />
+      {% endif %} {% if dropoff_address %}
+      <div><b>Drop Off Point:</b> {{ dropoff_address }}</div>
+      <div><b>Drop Off Time:</b> around {{ dropoff_time }}</div>
+      <div>(School bus will depart the school at {{ departure_time }})</div>
+      <br />
+      {% endif %} {% if fare > 0 %}
+      <div><b>Monthly Bus Fare per Student:</b> S${{ fare }}</div>
+      {% else %}
+      <div><b>Monthly Bus Fare per Student:</b> To be confirmed</div>
+      {% endif %}
+      <br />
+      <div>
+        If you agree with the details above, please reply to this email and we
+        will proceed with the registration.
+      </div>
+      <br />
+      <div><b>IMPORTANT</b></div>
+      <div>Take note that the details may be further altered.</div>
+      <br />
+      <div>Best Regards,</div>
+      <div>Wai Lian Trading and Transportation</div>
+    </div>
+  </body>
+</html>

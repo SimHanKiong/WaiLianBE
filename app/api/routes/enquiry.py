@@ -1,6 +1,7 @@
 from uuid import UUID
 from fastapi import APIRouter
 
+from app.core.email import send_enquiry_email
 from app.core.exception import MissingRecordException
 from app.schemas.enquiry import EnquiryCreate, EnquiryOut, EnquiryUpdate
 from app.crud.enquiry import enquiry_crud
@@ -31,10 +32,12 @@ def create_enquiry(db: SessionDep, enquiry_in: EnquiryCreate):
 
 
 @router.patch("/{id:uuid}", response_model=EnquiryOut)
-def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
+async def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
     enquiry = enquiry_crud.update(db, id, enquiry_in)
     if not enquiry:
         raise MissingRecordException("Enquiry")
+    if enquiry_in.email_sent:
+        await send_enquiry_email(enquiry)
     return enquiry
 
 

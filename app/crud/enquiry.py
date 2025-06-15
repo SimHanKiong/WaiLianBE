@@ -42,6 +42,9 @@ class CRUDEnquiry(CRUDBase[Enquiry]):
             pm_address = get_address(enquiry_in.pm_postal_code)
             enquiry_dict["pm_address"] = pm_address
 
+        if enquiry_in.status:
+            enquiry_dict["email_sent"] = False
+
         return super().update(db, id, enquiry_dict)
 
 

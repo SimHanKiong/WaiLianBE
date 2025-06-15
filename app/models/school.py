@@ -11,6 +11,7 @@ class School(Base):
     arrival_time: Mapped[str]
     departure_time: Mapped[str]
     email: Mapped[str | None]
+    password: Mapped[str]
     is_final_year: Mapped[bool]
 
     def __repr__(self) -> str:
