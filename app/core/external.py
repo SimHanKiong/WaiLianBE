@@ -15,6 +15,4 @@ def get_address(postal_code: str) -> str:
     if not results:
         return ""
 
-    block = results[0]["BLK_NO"]
-    road = results[0]["ROAD_NAME"]
-    return f"{block} {road}"
+    return results[0]["ADDRESS"]

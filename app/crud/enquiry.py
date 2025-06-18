@@ -43,7 +43,7 @@ class CRUDEnquiry(CRUDBase[Enquiry]):
             enquiry_dict["pm_address"] = pm_address
 
         if enquiry_in.status:
-            enquiry_dict["email_sent"] = False
+            enquiry_dict["is_email_sent"] = False
 
         return super().update(db, id, enquiry_dict)
 

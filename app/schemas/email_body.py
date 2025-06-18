@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class EnquirySentBody(BaseModel):
     home_address: str
     pickup_address: str
@@ -10,11 +11,14 @@ class EnquirySentBody(BaseModel):
     departure_time: str
     fare: int
 
+
 class EnquiryToBeConfirmedBody(BaseModel):
     home_address: str
 
+
 class EnquiryRejectedBody(BaseModel):
     home_address: str
+
 
 class EnquiryOptionBody(BaseModel):
     home_address: str

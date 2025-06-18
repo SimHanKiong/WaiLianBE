@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 from pydantic import EmailStr, field_validator
 
@@ -18,7 +19,8 @@ class EnquiryBase(BaseIn):
     pm_postal_code: str
     school_id: UUID
     status: EnquiryStatus | None
-    email_sent: bool
+    is_email_sent: bool
+    is_favourite: bool
     am_location_id: UUID | None
     pm_location_id: UUID | None
     year: int
@@ -44,7 +46,8 @@ class EnquiryUpdate(EnquiryBase):
     am_postal_code: str | None = None
     pm_postal_code: str | None = None
     status: EnquiryStatus | None = None
-    email_sent: bool | None = None
+    is_email_sent: bool | None = None
+    is_favourite: bool | None = None
     school_id: UUID | None = None
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
@@ -58,3 +61,4 @@ class EnquiryOut(EnquiryBase, BaseOut):
     home_address: str
     am_address: str
     pm_address: str
+    created_on: datetime

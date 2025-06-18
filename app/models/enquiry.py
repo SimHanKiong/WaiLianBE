@@ -32,11 +32,10 @@ class Enquiry(Base):
     pm_address: Mapped[str]
     year: Mapped[int]
     status: Mapped[EnquiryStatus | None]
-    email_sent: Mapped[bool]
+    is_email_sent: Mapped[bool]
+    is_favourite: Mapped[bool]
 
-    school_id: Mapped[UUID] = mapped_column(
-        ForeignKey("school.id", ondelete="CASCADE")
-    )
+    school_id: Mapped[UUID] = mapped_column(ForeignKey("school.id", ondelete="CASCADE"))
     school: Mapped[School] = relationship()
 
     am_location_id: Mapped[UUID | None] = mapped_column(

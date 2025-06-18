@@ -12,13 +12,15 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[LocationOut])
-def read_locations(db: SessionDep, type: RouteType | None = None):
+def read_locations(
+    db: SessionDep, type: RouteType | None = None, sort_by: str = "created_on"
+):
     filters = []
 
     if type:
         filters.append(location_crud.model.type == type)
 
-    locations = location_crud.read_all(db, *filters)
+    locations = location_crud.read_all(db, *filters, sort_by=sort_by)
     return locations
 
 

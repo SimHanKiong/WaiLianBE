@@ -1,7 +1,13 @@
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from app.models.enquiry import Enquiry, EnquiryStatus
-from app.schemas.email_body import EnquirySentBody, EnquiryToBeConfirmedBody, EnquiryRejectedBody, EnquiryOptionBody
+from app.schemas.email_body import (
+    EnquirySentBody,
+    EnquiryToBeConfirmedBody,
+    EnquiryRejectedBody,
+    EnquiryOptionBody,
+)
 from app.core.security import decrypt_reversible
+
 
 async def send_enquiry_email(enquiry: Enquiry) -> bool:
     if not enquiry:
@@ -48,6 +54,7 @@ async def send_enquiry_sent_email(enquiry: Enquiry) -> None:
     )
     return None
 
+
 async def send_enquiry_to_be_confirmed_email(enquiry: Enquiry) -> None:
     school = enquiry.school
     email_body = EnquiryToBeConfirmedBody(
@@ -64,6 +71,7 @@ async def send_enquiry_to_be_confirmed_email(enquiry: Enquiry) -> None:
     )
     return None
 
+
 async def send_enquiry_rejected_email(enquiry: Enquiry) -> None:
     school = enquiry.school
     email_body = EnquiryRejectedBody(
@@ -79,6 +87,7 @@ async def send_enquiry_rejected_email(enquiry: Enquiry) -> None:
         mail_password=decrypt_reversible(school.password) if school.password else "",
     )
     return None
+
 
 async def send_enquiry_option_email(enquiry: Enquiry) -> None:
     school = enquiry.school
@@ -105,6 +114,7 @@ async def send_enquiry_option_email(enquiry: Enquiry) -> None:
         mail_password=decrypt_reversible(school.password) if school.password else "",
     )
     return None
+
 
 async def send_email(
     subject: str,

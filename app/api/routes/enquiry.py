@@ -36,7 +36,7 @@ async def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
     enquiry = enquiry_crud.update(db, id, enquiry_in)
     if not enquiry:
         raise MissingRecordException("Enquiry")
-    if enquiry_in.email_sent:
+    if enquiry_in.is_email_sent:
         await send_enquiry_email(enquiry)
     return enquiry
 

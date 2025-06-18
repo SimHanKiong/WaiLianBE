@@ -3,6 +3,7 @@ from pydantic import EmailStr
 from app.schemas.base import BaseOut, BaseIn
 from app.core.security import decrypt_reversible
 
+
 class SchoolBase(BaseIn):
     name: str
     initial: str
@@ -29,7 +30,6 @@ class SchoolUpdate(SchoolBase):
 
 
 class SchoolOut(SchoolBase, BaseOut):
-    
     def model_post_init(self, _) -> None:
         if self.password:
             self.password = decrypt_reversible(self.password)
