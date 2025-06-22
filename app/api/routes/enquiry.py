@@ -12,7 +12,9 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[EnquiryOut])
-def read_enquiries(db: SessionDep):
+def read_enquiries(
+    db: SessionDep,
+):
     enquiries = enquiry_crud.read_all(db)
     return enquiries
 

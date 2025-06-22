@@ -24,6 +24,11 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
 
+    MINIO_ENDPOINT: str
+    MINIO_ACCESS_KEY: str
+    MINIO_SECRET_KEY: str
+    MINIO_BUCKET_NAME: str
+
     REVERSIBLE_ENCRYPTION_KEY: str
 
 

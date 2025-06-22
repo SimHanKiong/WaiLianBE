@@ -22,16 +22,18 @@ class CRUDBase(Generic[ModelType]):
         *args,
         skip: int = 0,
         limit: int = 1000,
-        sort_by: str = "created_on",
+        sort_by: list[str] = ["created_on"],
     ) -> list[ModelType]:
-        sort_col = getattr(self.model, sort_by.lstrip("-"))
-        sort_order = desc(sort_col) if sort_by.startswith("-") else asc(sort_col)
+        sort_orders = []
+        for field in sort_by:
+            col = getattr(self.model, field.lstrip("-"))
+            sort_orders.append(desc(col) if field.startswith("-") else asc(col))
         query = (
             select(self.model)
             .where(*args)
             .offset(skip)
             .limit(limit)
-            .order_by(sort_order)
+            .order_by(*sort_orders)
         )
         return db.execute(query).scalars().all()
 

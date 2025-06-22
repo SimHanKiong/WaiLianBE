@@ -1,5 +1,6 @@
+from typing import Annotated
 from uuid import UUID
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.core.exception import MissingRecordException
 from app.models.route import RouteType
@@ -13,10 +14,11 @@ router = APIRouter()
 
 @router.get("/", response_model=list[LocationOut])
 def read_locations(
-    db: SessionDep, type: RouteType | None = None, sort_by: str = "created_on"
+    db: SessionDep,
+    type: RouteType | None = None,
+    sort_by: Annotated[list[str], Query()] = ["created_on"],
 ):
     filters = []
-
     if type:
         filters.append(location_crud.model.type == type)
 

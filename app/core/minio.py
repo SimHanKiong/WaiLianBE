@@ -1,0 +1,55 @@
+import io
+import uuid
+
+from minio import Minio
+from minio.commonconfig import CopySource
+
+from app.core.config import settings
+
+
+class MinioClient:
+    def __init__(self):
+        self.client = Minio(
+            settings.MINIO_ENDPOINT,
+            access_key=settings.MINIO_ACCESS_KEY,
+            secret_key=settings.MINIO_SECRET_KEY,
+            secure=False,
+        )
+        self.bucket_name = settings.MINIO_BUCKET_NAME
+
+        if not self.client.bucket_exists(self.bucket_name):
+            self.client.make_bucket(self.bucket_name)
+
+    def upload(self, file_data: bytes, file_name: str, folder: str = "temp") -> str:
+        extension = file_name.split(".")[-1]
+        id = uuid.uuid4()
+        key = f"{folder}/{id}.{extension}"
+        self.client.put_object(
+            bucket_name=self.bucket_name,
+            object_name=key,
+            data=io.BytesIO(file_data),
+            length=len(file_data),
+        )
+        return key
+
+    def delete(self, key: str) -> None:
+        self.client.remove_object(
+            bucket_name=self.bucket_name,
+            object_name=key,
+        )
+
+    def rename(self, old_key: str, new_folder: str) -> str:
+        new_key = f"{new_folder}/{old_key.split('/')[-1]}"
+        self.client.copy_object(
+            bucket_name=self.bucket_name,
+            object_name=new_key,
+            source=CopySource(self.bucket_name, old_key),
+        )
+        self.delete(old_key)
+        return new_key
+
+    def sign_url(self, key: str) -> str:
+        return self.client.presigned_get_object(
+            bucket_name=self.bucket_name,
+            object_name=key,
+        )
