@@ -25,9 +25,16 @@ class Settings(BaseSettings):
         )
 
     MINIO_ENDPOINT: str
+    MINIO_PORT: int
     MINIO_ACCESS_KEY: str
     MINIO_SECRET_KEY: str
     MINIO_BUCKET_NAME: str
+    MINIO_SECURE: bool
+
+    @computed_field
+    @property
+    def MINIO_URL(self) -> str:
+        return f"{self.MINIO_ENDPOINT}:{self.MINIO_PORT}"
 
     REVERSIBLE_ENCRYPTION_KEY: str
 
