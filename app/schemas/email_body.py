@@ -10,6 +10,7 @@ class EnquirySentBody(BaseModel):
     dropoff_time: str
     departure_time: str
     fare: int
+    signed_url: str
 
 
 class EnquiryToBeConfirmedBody(BaseModel):

@@ -6,9 +6,19 @@
   </head>
   <body>
     <div>
-      <div>Dear Parents / Guardian,</div>
+      <div>Dear Parent / Guardian,</div>
       <br />
       <h2><b>School Bus Enquiries</b></h2>
+      <br />
+      {% if signed_url %}
+      <div>
+        <img
+          src="{{ signed_url }}"
+          alt="Attachment"
+          style="max-width: 100%; height: auto"
+        />
+      </div>
+      {% endif %}
       <br />
       <div>{{ home_address }}</div>
       <br />

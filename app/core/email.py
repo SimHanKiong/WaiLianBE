@@ -1,4 +1,5 @@
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
+from app.core.minio import MinioClient
 from app.models.enquiry import Enquiry, EnquiryStatus
 from app.schemas.email_body import (
     EnquirySentBody,
@@ -29,10 +30,12 @@ async def send_enquiry_email(enquiry: Enquiry) -> bool:
 
 
 async def send_enquiry_sent_email(enquiry: Enquiry) -> None:
+    file_client = MinioClient()
     school = enquiry.school
     am_location = enquiry.am_location
     pm_location = enquiry.pm_location
-
+    signed_url = file_client.sign_url(school.email_attachment_key)
+    
     email_body = EnquirySentBody(
         home_address=enquiry.home_address,
         pickup_address=am_location.address if am_location else "",
@@ -42,6 +45,7 @@ async def send_enquiry_sent_email(enquiry: Enquiry) -> None:
         dropoff_time=pm_location.time if pm_location else "",
         departure_time=school.departure_time,
         fare=enquiry.fare,
+        signed_url=signed_url
     )
 
     await send_email(
