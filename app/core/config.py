@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     @property
     def MINIO_PRIVATE_URL(self) -> str:
         return f"{self.MINIO_PRIVATE_ENDPOINT}:{self.MINIO_PRIVATE_PORT}"
-    
+
     @computed_field
     @property
     def MINIO_PUBLIC_URL(self) -> str:
