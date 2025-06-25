@@ -10,7 +10,7 @@ from app.core.config import settings
 class MinioClient:
     def __init__(self):
         self.client = Minio(
-            settings.MINIO_URL,
+            settings.MINIO_PRIVATE_URL,
             access_key=settings.MINIO_ACCESS_KEY,
             secret_key=settings.MINIO_SECRET_KEY,
             secure=settings.MINIO_SECURE,
@@ -49,7 +49,8 @@ class MinioClient:
         return new_key
 
     def sign_url(self, key: str) -> str:
-        return self.client.presigned_get_object(
+        url = self.client.presigned_get_object(
             bucket_name=self.bucket_name,
             object_name=key,
         )
+        return url.replace(settings.MINIO_PRIVATE_URL, settings.MINIO_PUBLIC_URL)

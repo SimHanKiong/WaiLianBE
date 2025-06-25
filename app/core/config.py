@@ -24,8 +24,10 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
 
-    MINIO_ENDPOINT: str
-    MINIO_PORT: int
+    MINIO_PRIVATE_ENDPOINT: str
+    MINIO_PRIVATE_PORT: int
+    MINIO_PUBLIC_ENDPOINT: str
+    MINIO_PUBLIC_PORT: int
     MINIO_ACCESS_KEY: str
     MINIO_SECRET_KEY: str
     MINIO_BUCKET_NAME: str
@@ -33,8 +35,13 @@ class Settings(BaseSettings):
 
     @computed_field
     @property
-    def MINIO_URL(self) -> str:
-        return f"{self.MINIO_ENDPOINT}:{self.MINIO_PORT}"
+    def MINIO_PRIVATE_URL(self) -> str:
+        return f"{self.MINIO_PRIVATE_ENDPOINT}:{self.MINIO_PRIVATE_PORT}"
+    
+    @computed_field
+    @property
+    def MINIO_PUBLIC_URL(self) -> str:
+        return f"{self.MINIO_PUBLIC_ENDPOINT}:{self.MINIO_PUBLIC_PORT}"
 
     REVERSIBLE_ENCRYPTION_KEY: str
 
