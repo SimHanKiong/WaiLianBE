@@ -1,4 +1,4 @@
 from app.crud.base import CRUDBase
-from app.models import Location
+from app.models.location import Location
 
 location_crud = CRUDBase(model=Location)

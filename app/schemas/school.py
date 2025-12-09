@@ -1,7 +1,8 @@
 from uuid import UUID
-from pydantic import EmailStr
+from pydantic import EmailStr, computed_field
 from app.schemas.base import BaseOut, BaseIn
 from app.core.security import decrypt_reversible
+from app.core.minio import MinioClient
 
 
 class SchoolBase(BaseIn):
@@ -17,6 +18,7 @@ class SchoolBase(BaseIn):
 
 class SchoolCreate(SchoolBase):
     id: UUID
+    pass
 
 
 class SchoolUpdate(SchoolBase):
@@ -31,8 +33,14 @@ class SchoolUpdate(SchoolBase):
 
 
 class SchoolOut(SchoolBase, BaseOut):
-    email_attachment_signed_url: str | None = None
-
     def model_post_init(self, _) -> None:
         if self.password:
             self.password = decrypt_reversible(self.password)
+
+    @computed_field
+    @property
+    def email_attachment_signed_url(self) -> str | None:
+        if not self.email_attachment_key:
+            return None
+        file_client = MinioClient()
+        return file_client.sign_url(self.email_attachment_key)

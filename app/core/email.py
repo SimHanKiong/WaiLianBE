@@ -1,6 +1,7 @@
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from app.core.minio import MinioClient
-from app.models.enquiry import Enquiry, EnquiryStatus
+from app.models.enquiry import Enquiry
+from app.schemas.enquiry import EnquiryStatus
 from app.schemas.email_body import (
     EnquirySentBody,
     EnquiryToBeConfirmedBody,
@@ -11,9 +12,6 @@ from app.core.security import decrypt_reversible
 
 
 async def send_enquiry_email(enquiry: Enquiry) -> bool:
-    if not enquiry:
-        return False
-
     match enquiry.status:
         case EnquiryStatus.SENT:
             await send_enquiry_sent_email(enquiry)

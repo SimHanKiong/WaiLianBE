@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from app.core.email import send_enquiry_email
 from app.core.exception import MissingRecordException
 from app.schemas.enquiry import EnquiryCreate, EnquiryOut, EnquiryUpdate
-from app.crud.enquiry import enquiry_crud
+from app.services import enquiry as enquiry_service
 from app.api.deps import SessionDep
 
 
@@ -12,16 +12,14 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[EnquiryOut])
-def read_enquiries(
-    db: SessionDep,
-):
-    enquiries = enquiry_crud.read_all(db)
+def read_enquiries(db: SessionDep):
+    enquiries = enquiry_service.read_enquiries(db)
     return enquiries
 
 
 @router.get("/{id:uuid}", response_model=EnquiryOut)
 def read_enquiry(db: SessionDep, id: UUID):
-    enquiry = enquiry_crud.read_one(db, enquiry_crud.model.id == id)
+    enquiry = enquiry_service.read_enquiry(db, id)
     if not enquiry:
         raise MissingRecordException("Enquiry")
     return enquiry
@@ -29,13 +27,13 @@ def read_enquiry(db: SessionDep, id: UUID):
 
 @router.post("/", response_model=EnquiryOut)
 def create_enquiry(db: SessionDep, enquiry_in: EnquiryCreate):
-    enquiry = enquiry_crud.create(db, enquiry_in)
+    enquiry = enquiry_service.create_enquiry(db, enquiry_in)
     return enquiry
 
 
 @router.patch("/{id:uuid}", response_model=EnquiryOut)
 async def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
-    enquiry = enquiry_crud.update(db, id, enquiry_in)
+    enquiry = enquiry_service.update_enquiry(db, id, enquiry_in)
     if not enquiry:
         raise MissingRecordException("Enquiry")
     if enquiry_in.is_email_sent:
@@ -45,7 +43,7 @@ async def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
 
 @router.delete("/{id:uuid}", response_model=EnquiryOut)
 def delete_enquiry(db: SessionDep, id: UUID):
-    enquiry = enquiry_crud.delete(db, id)
+    enquiry = enquiry_service.delete_enquiry(db, id)
     if not enquiry:
         raise MissingRecordException("Enquiry")
     return enquiry

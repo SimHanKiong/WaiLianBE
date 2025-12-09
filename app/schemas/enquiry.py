@@ -1,11 +1,19 @@
+import enum
 from datetime import datetime
 from uuid import UUID
 from pydantic import EmailStr, field_validator
 
-from app.models.enquiry import EnquiryStatus
 from app.schemas.location import LocationOut
 from app.schemas.school import SchoolOut
 from app.schemas.base import BaseOut, BaseIn
+
+
+class EnquiryStatus(enum.Enum):
+    TBC = "To Be Confirmed"
+    OPTION = "Option"
+    SENT = "Enquiry Sent"
+    REGISTRATION = "Registration"
+    REJECTED = "Rejected"
 
 
 class EnquiryBase(BaseIn):

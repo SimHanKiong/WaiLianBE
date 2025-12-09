@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Generic, TypeVar
 from uuid import UUID
 from pydantic import BaseModel
@@ -6,7 +7,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
 from app.core.exception import IntegrityException, UniqueViolationException
-from app.models import Base
+from app.models.base import Base
 
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -47,6 +48,11 @@ class CRUDBase(Generic[ModelType]):
             if isinstance(obj_in, BaseModel)
             else obj_in
         )
+
+        for field, value in obj_data.items():
+            if isinstance(value, Enum):
+                obj_data[field] = value.value
+
         db_obj = self.model(**obj_data)
 
         try:
@@ -75,6 +81,8 @@ class CRUDBase(Generic[ModelType]):
         )
 
         for field, value in obj_data.items():
+            if isinstance(value, Enum):
+                value = value.value
             setattr(db_obj, field, value)
 
         try:

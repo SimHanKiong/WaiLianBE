@@ -16,14 +16,11 @@ def read_schools(db: Session, minio: MinioClient) -> list[SchoolOut]:
 def read_school(db: Session, minio: MinioClient, id: UUID) -> School | None:
     school = school_crud.read_one(db, school_crud.model.id == id)
     if not school:
-        print("No school found")
         return None
     return sign_email_attachment(school, minio)
 
 
-def create_school(
-    db: Session, minio: MinioClient, school_in: SchoolCreate
-) -> School | None:
+def create_school(db: Session, minio: MinioClient, school_in: SchoolCreate) -> School:
     if school_in.password:
         school_in.password = encrypt_reversible(school_in.password)
 

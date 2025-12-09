@@ -1,4 +1,3 @@
-import enum
 from uuid import UUID
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -6,14 +5,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base
 from app.models.location import Location
 from app.models.school import School
-
-
-class EnquiryStatus(enum.Enum):
-    TBC = "To Be Confirmed"
-    OPTION = "Option"
-    SENT = "Enquiry Sent"
-    REGISTRATION = "Registration"
-    REJECTED = "Rejected"
 
 
 class Enquiry(Base):
@@ -31,7 +22,7 @@ class Enquiry(Base):
     pm_postal_code: Mapped[str]
     pm_address: Mapped[str]
     year: Mapped[int]
-    status: Mapped[EnquiryStatus | None]
+    status: Mapped[str | None]
     is_email_sent: Mapped[bool]
     is_favourite: Mapped[bool]
 
