@@ -12,7 +12,7 @@ def read_enquiries(db: Session) -> list[EnquiryOut]:
     return enquiries
 
 
-def read_enquiry(db: Session) -> EnquiryOut | None:
+def read_enquiry(db: Session, id: UUID) -> EnquiryOut | None:
     enquiry = enquiry_crud.read_one(db, enquiry_crud.model.id == id)
     return enquiry
 
