@@ -1,10 +1,12 @@
 from uuid import UUID
-from sqlalchemy.orm import Session
 
+from sqlalchemy.orm import Session
 
 from app.core.external import get_address
 from app.crud.enquiry import enquiry_crud
-from app.schemas.enquiry import EnquiryCreate, EnquiryOut, EnquiryUpdate
+from app.schemas.enquiry import EnquiryCreate
+from app.schemas.enquiry import EnquiryOut
+from app.schemas.enquiry import EnquiryUpdate
 
 
 def read_enquiries(db: Session) -> list[EnquiryOut]:

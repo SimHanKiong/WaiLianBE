@@ -1,12 +1,17 @@
 from enum import Enum
-from typing import Generic, TypeVar
+from typing import Generic
+from typing import TypeVar
 from uuid import UUID
-from pydantic import BaseModel
-from sqlalchemy import asc, desc, select
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
-from app.core.exception import IntegrityException, UniqueViolationException
+from pydantic import BaseModel
+from sqlalchemy import asc
+from sqlalchemy import desc
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from app.core.exception import IntegrityException
+from app.core.exception import UniqueViolationException
 from app.models.base import Base
 
 

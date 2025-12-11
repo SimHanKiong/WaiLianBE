@@ -1,4 +1,5 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter
+from fastapi import UploadFile
 
 from app.core.minio import MinioClient
 from app.schemas.file import FileOut

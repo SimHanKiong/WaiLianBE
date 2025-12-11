@@ -1,6 +1,9 @@
 from uuid import UUID
+
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
 
 from app.models.base import Base
 from app.models.location import Location

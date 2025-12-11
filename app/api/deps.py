@@ -1,9 +1,11 @@
 from collections.abc import Generator
 from typing import Annotated
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import engine
+from app.core.minio import MinioClient
 
 
 def get_db() -> Generator[Session, None, None]:
@@ -11,4 +13,9 @@ def get_db() -> Generator[Session, None, None]:
         yield session
 
 
+def get_minio() -> MinioClient:
+    return MinioClient()
+
+
 SessionDep = Annotated[Session, Depends(get_db)]
+MinioDep = Annotated[MinioClient, Depends(get_minio)]

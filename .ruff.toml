@@ -1,1 +1,21 @@
 exclude = ["alembic/"]
+
+[lint]
+select = ["I"]
+
+[lint.isort]
+# Group first-party imports separately
+known-first-party = ["app"]
+
+# Force single line imports
+force-single-line = true
+
+# Sort by import type (standard, third-party, first-party, local)
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+# Combine "from" imports onto same line
+combine-as-imports = true
+
+# Number of lines between import sections
+lines-after-imports = 2
+lines-between-types = 1

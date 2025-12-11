@@ -1,16 +1,13 @@
 from fastapi import FastAPI
 
+from app.api.exception_handlers import integrity_error_handler
+from app.api.exception_handlers import missing_record_error_handler
+from app.api.exception_handlers import unique_violation_error_handler
 from app.api.main import api_router
-from app.core.exception import (
-    IntegrityException,
-    UniqueViolationException,
-    MissingRecordException,
-)
-from app.api.exception_handlers import (
-    integrity_error_handler,
-    unique_violation_error_handler,
-    missing_record_error_handler,
-)
+from app.core.exception import IntegrityException
+from app.core.exception import MissingRecordException
+from app.core.exception import UniqueViolationException
+
 
 app = FastAPI()
 

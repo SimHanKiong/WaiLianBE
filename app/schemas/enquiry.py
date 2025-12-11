@@ -1,11 +1,15 @@
 import enum
+
 from datetime import datetime
 from uuid import UUID
-from pydantic import EmailStr, field_validator
 
+from pydantic import EmailStr
+from pydantic import field_validator
+
+from app.schemas.base import BaseIn
+from app.schemas.base import BaseOut
 from app.schemas.location import LocationOut
 from app.schemas.school import SchoolOut
-from app.schemas.base import BaseOut, BaseIn
 
 
 class EnquiryStatus(enum.Enum):

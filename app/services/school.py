@@ -1,11 +1,14 @@
 from uuid import UUID
+
 from sqlalchemy.orm import Session
 
 from app.core.minio import MinioClient
 from app.core.security import encrypt_reversible
 from app.crud.school import school_crud
 from app.models.school import School
-from app.schemas.school import SchoolCreate, SchoolOut, SchoolUpdate
+from app.schemas.school import SchoolCreate
+from app.schemas.school import SchoolOut
+from app.schemas.school import SchoolUpdate
 
 
 def read_schools(db: Session, minio: MinioClient) -> list[SchoolOut]:
@@ -20,7 +23,9 @@ def read_school(db: Session, minio: MinioClient, id: UUID) -> School | None:
     return sign_email_attachment(school, minio)
 
 
-def create_school(db: Session, minio: MinioClient, school_in: SchoolCreate) -> School:
+def create_school(
+    db: Session, minio: MinioClient, school_in: SchoolCreate
+) -> SchoolOut:
     if school_in.password:
         school_in.password = encrypt_reversible(school_in.password)
 
@@ -36,7 +41,7 @@ def create_school(db: Session, minio: MinioClient, school_in: SchoolCreate) -> S
 
 def update_school(
     db: Session, minio: MinioClient, id: UUID, school_in: SchoolUpdate
-) -> School | None:
+) -> SchoolOut | None:
     school = school_crud.read_one(db, school_crud.model.id == id)
     if not school:
         return None
@@ -57,7 +62,7 @@ def update_school(
     return sign_email_attachment(school, minio)
 
 
-def delete_school(db: Session, minio: MinioClient, id: UUID) -> School | None:
+def delete_school(db: Session, minio: MinioClient, id: UUID) -> SchoolOut | None:
     school = school_crud.read_one(db, school_crud.model.id == id)
     if not school:
         return None
@@ -69,9 +74,9 @@ def delete_school(db: Session, minio: MinioClient, id: UUID) -> School | None:
     return sign_email_attachment(school, minio)
 
 
-def sign_email_attachment(school: School, minio: MinioClient) -> SchoolOut | None:
+def sign_email_attachment(school: School, minio: MinioClient) -> SchoolOut:
     if not school.email_attachment_key:
-        return school
+        return SchoolOut.model_validate(school)
     signed_url = minio.sign_url(school.email_attachment_key)
     school_out = SchoolOut.model_validate(school)
     school_out.email_attachment_signed_url = signed_url

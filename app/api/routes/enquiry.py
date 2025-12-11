@@ -1,11 +1,14 @@
 from uuid import UUID
+
 from fastapi import APIRouter
 
+from app.api.deps import SessionDep
 from app.core.email import send_enquiry_email
 from app.core.exception import MissingRecordException
-from app.schemas.enquiry import EnquiryCreate, EnquiryOut, EnquiryUpdate
+from app.schemas.enquiry import EnquiryCreate
+from app.schemas.enquiry import EnquiryOut
+from app.schemas.enquiry import EnquiryUpdate
 from app.services import enquiry as enquiry_service
-from app.api.deps import SessionDep
 
 
 router = APIRouter()

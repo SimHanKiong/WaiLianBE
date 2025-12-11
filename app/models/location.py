@@ -1,6 +1,7 @@
+import datetime
+
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import Mapped
-import datetime
 
 from app.models.base import Base
 from app.models.route import RouteType
