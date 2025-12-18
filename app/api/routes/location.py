@@ -1,16 +1,13 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter
-from fastapi import Query
+from fastapi import APIRouter, Query
 
 from app.api.deps import SessionDep
 from app.core.exception import MissingRecordException
 from app.crud.location import location_crud
 from app.models.route import RouteType
-from app.schemas.location import LocationCreate
-from app.schemas.location import LocationOut
-from app.schemas.location import LocationUpdate
+from app.schemas import LocationCreate, LocationOut, LocationUpdate
 
 
 router = APIRouter()

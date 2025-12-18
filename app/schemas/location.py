@@ -1,8 +1,7 @@
 import datetime
 
 from app.models.route import RouteType
-from app.schemas.base import BaseIn
-from app.schemas.base import BaseOut
+from app.schemas.base import BaseIn, BaseOut
 
 
 class LocationBase(BaseIn):

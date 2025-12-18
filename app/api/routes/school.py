@@ -2,12 +2,9 @@ from uuid import UUID
 
 from fastapi import APIRouter
 
-from app.api.deps import MinioDep
-from app.api.deps import SessionDep
+from app.api.deps import MinioDep, SessionDep
 from app.core.exception import MissingRecordException
-from app.schemas.school import SchoolCreate
-from app.schemas.school import SchoolOut
-from app.schemas.school import SchoolUpdate
+from app.schemas import SchoolCreate, SchoolOut, SchoolUpdate
 from app.services import school as school_service
 
 
@@ -42,9 +39,7 @@ def update_school(db: SessionDep, minio: MinioDep, id: UUID, school_in: SchoolUp
     return school
 
 
-@router.delete("/{id:uuid}", response_model=SchoolOut)
-def delete_school(db: SessionDep, minio: MinioDep, id: UUID):
-    school = school_service.delete_school(db, minio, id)
-    if not school:
-        raise MissingRecordException("School")
-    return school
+@router.delete("/", response_model=list[SchoolOut])
+def delete_schools(db: SessionDep, minio: MinioDep, ids: list[UUID]):
+    schools = school_service.delete_schools(db, minio, ids)
+    return schools

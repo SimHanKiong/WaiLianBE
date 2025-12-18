@@ -1,13 +1,18 @@
 import enum
 
 from datetime import date
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated
 from uuid import UUID
 
 from pydantic import AfterValidator
 
-from app.schemas.base import BaseIn
-from app.schemas.base import BaseOut
+
+if TYPE_CHECKING:
+    from app.schemas.parent import ParentOut
+
+from app.schemas.base import BaseIn, BaseOut
+from app.schemas.location import LocationOut
+from app.schemas.school import SchoolOut
 
 
 def validate_level(level: int) -> int:
@@ -27,7 +32,11 @@ def validate_nric(nric: str) -> str:
     return nric
 
 
-class StudentGender(enum.Enum):
+Level = Annotated[int, AfterValidator(validate_level)]
+NRIC = Annotated[str, AfterValidator(validate_nric)]
+
+
+class Gender(enum.Enum):
     MALE = "M"
     FEMALE = "F"
 
@@ -41,11 +50,11 @@ class TransportRequirement(enum.Enum):
 class StudentBase(BaseIn):
     full_name: str
     given_name: str
-    gender: StudentGender
-    level: Annotated[int, AfterValidator(validate_level)]
+    gender: Gender
+    level: Level
     class_name: str
     date_of_birth: date
-    nric: Annotated[str, AfterValidator(validate_nric)]
+    nric: NRIC
     transport_start_date: date
     transport_requirement: TransportRequirement
     block: str
@@ -56,16 +65,22 @@ class StudentBase(BaseIn):
     parent_id: UUID
 
 
-class StudentCreateFromEnquiry(BaseIn):
+class StudentCreate(BaseIn):
     full_name: str
     given_name: str
-    gender: StudentGender
-    level: Annotated[int, AfterValidator(validate_level)]
+    gender: Gender
+    level: Level
     class_name: str
     date_of_birth: date
-    nric: Annotated[str, AfterValidator(validate_nric)]
+    nric: NRIC
     transport_start_date: date
     transport_requirement: TransportRequirement
+
+
+class StudentUpdate(BaseIn):
+    block: str | None = None
+    am_location_id: UUID | None = None
+    pm_location_id: UUID | None = None
 
 
 # class StudentUpdate(StudentBase):
@@ -87,4 +102,10 @@ class StudentCreateFromEnquiry(BaseIn):
 
 
 class StudentOut(StudentBase, BaseOut):
-    pass
+    school: SchoolOut
+    am_location: LocationOut | None
+    pm_location: LocationOut | None
+
+
+class StudentOutWithParent(StudentOut):
+    parent: "ParentOut"

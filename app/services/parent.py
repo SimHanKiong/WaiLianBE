@@ -4,10 +4,7 @@ from app.core.exception import IntegrityException
 from app.crud.enquiry import enquiry_crud
 from app.crud.parent import parent_crud
 from app.crud.student import student_crud
-from app.schemas.parent import ParentBase
-from app.schemas.parent import ParentCreate
-from app.schemas.parent import ParentOutWithChildren
-from app.schemas.student import StudentBase
+from app.schemas import ParentBase, ParentCreate, ParentOutWithChildren, StudentBase
 
 
 def create_parent(db: Session, parent_in: ParentCreate) -> ParentOutWithChildren:

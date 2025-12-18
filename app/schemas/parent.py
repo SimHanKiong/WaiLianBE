@@ -1,11 +1,14 @@
+from typing import TYPE_CHECKING
 from uuid import UUID
 
 from pydantic import EmailStr
 
-from app.schemas.base import BaseIn
-from app.schemas.base import BaseOut
-from app.schemas.student import StudentCreateFromEnquiry
-from app.schemas.student import StudentOut
+
+if TYPE_CHECKING:
+    from app.schemas.student import StudentOut
+
+from app.schemas.base import BaseIn, BaseOut
+from app.schemas.student import StudentCreate
 
 
 class ParentBase(BaseIn):
@@ -37,7 +40,7 @@ class ParentCreate(BaseIn):
     contact2_relationship: str
     under_fas: bool
     enquiry_id: UUID
-    children: list[StudentCreateFromEnquiry]
+    children: list[StudentCreate]
 
 
 class ParentUpdate(ParentBase):
@@ -65,4 +68,4 @@ class ParentOut(ParentBase, BaseOut):
 
 
 class ParentOutWithChildren(ParentOut):
-    children: list[StudentOut]
+    children: list["StudentOut"]

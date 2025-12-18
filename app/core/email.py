@@ -1,16 +1,15 @@
-from fastapi_mail import ConnectionConfig
-from fastapi_mail import FastMail
-from fastapi_mail import MessageSchema
-from fastapi_mail import MessageType
+from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 
 from app.core.minio import MinioClient
 from app.core.security import decrypt_reversible
-from app.models.enquiry import Enquiry
-from app.schemas.email_body import EnquiryOptionBody
-from app.schemas.email_body import EnquiryRejectedBody
-from app.schemas.email_body import EnquirySentBody
-from app.schemas.email_body import EnquiryToBeConfirmedBody
-from app.schemas.enquiry import EnquiryStatus
+from app.models import Enquiry
+from app.schemas import (
+    EnquiryOptionBody,
+    EnquiryRejectedBody,
+    EnquirySentBody,
+    EnquiryStatus,
+    EnquiryToBeConfirmedBody,
+)
 
 
 async def send_enquiry_email(enquiry: Enquiry) -> bool:

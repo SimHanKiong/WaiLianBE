@@ -5,9 +5,7 @@ from fastapi import APIRouter
 from app.api.deps import SessionDep
 from app.core.email import send_enquiry_email
 from app.core.exception import MissingRecordException
-from app.schemas.enquiry import EnquiryCreate
-from app.schemas.enquiry import EnquiryOut
-from app.schemas.enquiry import EnquiryUpdate
+from app.schemas import EnquiryCreate, EnquiryOut, EnquiryUpdate
 from app.services import enquiry as enquiry_service
 
 
@@ -44,9 +42,7 @@ async def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
     return enquiry
 
 
-@router.delete("/{id:uuid}", response_model=EnquiryOut)
-def delete_enquiry(db: SessionDep, id: UUID):
-    enquiry = enquiry_service.delete_enquiry(db, id)
-    if not enquiry:
-        raise MissingRecordException("Enquiry")
-    return enquiry
+@router.delete("/", response_model=list[EnquiryOut])
+def delete_enquiries(db: SessionDep, ids: list[UUID]):
+    enquiries = enquiry_service.delete_enquiries(db, ids)
+    return enquiries

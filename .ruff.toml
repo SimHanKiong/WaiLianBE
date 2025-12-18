@@ -7,9 +7,6 @@ select = ["I"]
 # Group first-party imports separately
 known-first-party = ["app"]
 
-# Force single line imports
-force-single-line = true
-
 # Sort by import type (standard, third-party, first-party, local)
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 

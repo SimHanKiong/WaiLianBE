@@ -4,9 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.core.external import get_address
 from app.crud.enquiry import enquiry_crud
-from app.schemas.enquiry import EnquiryCreate
-from app.schemas.enquiry import EnquiryOut
-from app.schemas.enquiry import EnquiryUpdate
+from app.schemas import EnquiryBase, EnquiryCreate, EnquiryOut, EnquiryUpdate
 
 
 def read_enquiries(db: Session) -> list[EnquiryOut]:
@@ -20,22 +18,19 @@ def read_enquiry(db: Session, id: UUID) -> EnquiryOut | None:
 
 
 def create_enquiry(db: Session, enquiry_in: EnquiryCreate) -> EnquiryOut:
-    enquiry_dict = enquiry_in.model_dump(exclude_none=True, exclude_unset=True)
-    home_address = get_address(enquiry_in.home_postal_code)
-    am_address = (
-        get_address(enquiry_in.am_postal_code) if enquiry_in.am_postal_code else ""
+    enquiry = EnquiryBase(
+        **enquiry_in.model_dump(),
+        home_address=get_address(enquiry_in.home_postal_code)
+        if enquiry_in.home_postal_code
+        else "",
+        am_address=get_address(enquiry_in.am_postal_code)
+        if enquiry_in.am_postal_code
+        else "",
+        pm_address=get_address(enquiry_in.pm_postal_code)
+        if enquiry_in.pm_postal_code
+        else "",
     )
-    pm_address = (
-        get_address(enquiry_in.pm_postal_code) if enquiry_in.pm_postal_code else ""
-    )
-    enquiry_dict.update(
-        {
-            "home_address": home_address,
-            "am_address": am_address,
-            "pm_address": pm_address,
-        }
-    )
-    return enquiry_crud.create(db, enquiry_dict)
+    return enquiry_crud.create(db, enquiry)
 
 
 def update_enquiry(
@@ -60,6 +55,6 @@ def update_enquiry(
     return enquiry_crud.update(db, id, enquiry_dict)
 
 
-def delete_enquiry(db: Session, id: UUID) -> EnquiryOut | None:
-    enqiry = enquiry_crud.delete(db, id)
-    return enqiry
+def delete_enquiries(db: Session, ids: list[UUID]) -> list[EnquiryOut]:
+    enquiries = enquiry_crud.delete_all(db, ids)
+    return enquiries

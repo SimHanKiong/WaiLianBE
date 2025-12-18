@@ -1,18 +1,14 @@
 from enum import Enum
-from typing import Generic
-from typing import TypeVar
+from typing import Generic, TypeVar
 from uuid import UUID
 
 from pydantic import BaseModel
-from sqlalchemy import asc
-from sqlalchemy import desc
-from sqlalchemy import select
+from sqlalchemy import asc, desc, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.core.exception import IntegrityException
-from app.core.exception import UniqueViolationException
-from app.models.base import Base
+from app.core.exception import IntegrityException, UniqueViolationException
+from app.models import Base
 
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -99,6 +95,19 @@ class CRUDBase(Generic[ModelType]):
             raise IntegrityException(model_name=self.model.__name__)
         except UniqueViolationException:
             raise IntegrityException(model_name=self.model.__name__)
+
+    def delete_all(self, db: Session, ids: list[UUID]) -> list[ModelType]:
+        if not ids:
+            return []
+            
+        query = select(self.model).where(self.model.id.in_(ids))
+        db_objs = db.execute(query).scalars().all()
+
+        for db_obj in db_objs:
+            db.delete(db_obj)
+        db.commit()
+
+        return db_objs
 
     def delete(self, db: Session, id: UUID) -> ModelType | None:
         query = select(self.model).where(self.model.id == id)

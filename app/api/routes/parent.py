@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.deps import SessionDep
-from app.schemas.parent import ParentCreate
-from app.schemas.parent import ParentOutWithChildren
+from app.schemas import ParentCreate, ParentOutWithChildren
 from app.services import parent as parent_service
 
 

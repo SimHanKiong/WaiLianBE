@@ -3,8 +3,7 @@ from uuid import UUID
 from pydantic import EmailStr
 
 from app.core.security import decrypt_reversible
-from app.schemas.base import BaseIn
-from app.schemas.base import BaseOut
+from app.schemas.base import BaseIn, BaseOut
 
 
 class SchoolBase(BaseIn):
@@ -20,7 +19,6 @@ class SchoolBase(BaseIn):
 
 class SchoolCreate(SchoolBase):
     id: UUID
-    pass
 
 
 class SchoolUpdate(SchoolBase):
