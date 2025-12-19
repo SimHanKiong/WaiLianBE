@@ -34,11 +34,9 @@ def create_enquiry(db: SessionDep, enquiry_in: EnquiryCreate):
 
 @router.patch("/{id:uuid}", response_model=EnquiryOut)
 async def update_enquiry(db: SessionDep, id: UUID, enquiry_in: EnquiryUpdate):
-    enquiry = enquiry_service.update_enquiry(db, id, enquiry_in)
+    enquiry = await enquiry_service.update_enquiry(db, id, enquiry_in)
     if not enquiry:
         raise MissingRecordException("Enquiry")
-    if enquiry_in.is_email_sent:
-        await send_enquiry_email(enquiry)
     return enquiry
 
 

@@ -4,6 +4,7 @@ from app.schemas.email_body import (
     EnquiryRejectedBody,
     EnquirySentBody,
     EnquiryToBeConfirmedBody,
+    EnquiryRegistrationBody,
 )
 from app.schemas.enquiry import (
     EnquiryBase,

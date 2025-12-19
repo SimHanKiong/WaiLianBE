@@ -30,3 +30,8 @@ class EnquiryOptionBody(BaseModel):
     dropoff_time: str
     departure_time: str
     fare: int
+
+
+class EnquiryRegistrationBody(BaseModel):
+    home_address: str
+    registration_url: str

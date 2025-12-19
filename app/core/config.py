@@ -45,5 +45,7 @@ class Settings(BaseSettings):
 
     REVERSIBLE_ENCRYPTION_KEY: str
 
+    FE_URL: str
+
 
 settings = Settings()

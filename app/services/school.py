@@ -16,7 +16,7 @@ def read_schools(db: Session, minio: MinioClient) -> list[SchoolOut]:
     return [sign_email_attachment(school, minio) for school in schools]
 
 
-def read_school(db: Session, minio: MinioClient, id: UUID) -> School | None:
+def read_school(db: Session, minio: MinioClient, id: UUID) -> SchoolOut | None:
     school = school_crud.read_one(db, school_crud.model.id == id)
     if not school:
         return None

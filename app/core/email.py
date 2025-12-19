@@ -1,18 +1,18 @@
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 
 from app.core.minio import MinioClient
-from app.core.security import decrypt_reversible
-from app.models import Enquiry
+from app.core.config import settings
 from app.schemas import (
     EnquiryOptionBody,
     EnquiryRejectedBody,
     EnquirySentBody,
     EnquiryStatus,
     EnquiryToBeConfirmedBody,
+    EnquiryRegistrationBody,
+    EnquiryOut
 )
 
-
-async def send_enquiry_email(enquiry: Enquiry) -> bool:
+async def send_enquiry_email(enquiry: EnquiryOut) -> bool:
     match enquiry.status:
         case EnquiryStatus.SENT:
             await send_enquiry_sent_email(enquiry)
@@ -22,13 +22,16 @@ async def send_enquiry_email(enquiry: Enquiry) -> bool:
             await send_enquiry_rejected_email(enquiry)
         case EnquiryStatus.OPTION:
             await send_enquiry_option_email(enquiry)
+        case EnquiryStatus.REGISTRATION:
+            print("Sending enquiry registration email")
+            await send_enquiry_registration_email(enquiry)
         case _:
             return False
 
     return True
 
 
-async def send_enquiry_sent_email(enquiry: Enquiry) -> None:
+async def send_enquiry_sent_email(enquiry: EnquiryOut) -> None:
     file_client = MinioClient()
     school = enquiry.school
     am_location = enquiry.am_location
@@ -52,13 +55,13 @@ async def send_enquiry_sent_email(enquiry: Enquiry) -> None:
         recipients=[enquiry.email],
         template_name="enquiry_sent.html",
         template_body=email_body.model_dump(),
-        mail_username=school.email if school.email else "",
-        mail_password=decrypt_reversible(school.password) if school.password else "",
+        mail_username=school.email,
+        mail_password=school.password,
     )
     return None
 
 
-async def send_enquiry_to_be_confirmed_email(enquiry: Enquiry) -> None:
+async def send_enquiry_to_be_confirmed_email(enquiry: EnquiryOut) -> None:
     school = enquiry.school
     email_body = EnquiryToBeConfirmedBody(
         home_address=enquiry.home_address,
@@ -69,13 +72,13 @@ async def send_enquiry_to_be_confirmed_email(enquiry: Enquiry) -> None:
         recipients=[enquiry.email],
         template_name="enquiry_to_be_confirmed.html",
         template_body=email_body.model_dump(),
-        mail_username=school.email if school.email else "",
-        mail_password=decrypt_reversible(school.password) if school.password else "",
+        mail_username=school.email,
+        mail_password=school.password,
     )
     return None
 
 
-async def send_enquiry_rejected_email(enquiry: Enquiry) -> None:
+async def send_enquiry_rejected_email(enquiry: EnquiryOut) -> None:
     school = enquiry.school
     email_body = EnquiryRejectedBody(
         home_address=enquiry.home_address,
@@ -86,13 +89,13 @@ async def send_enquiry_rejected_email(enquiry: Enquiry) -> None:
         recipients=[enquiry.email],
         template_name="enquiry_rejected.html",
         template_body=email_body.model_dump(),
-        mail_username=school.email if school.email else "",
-        mail_password=decrypt_reversible(school.password) if school.password else "",
+        mail_username=school.email,
+        mail_password=school.password,
     )
     return None
 
 
-async def send_enquiry_option_email(enquiry: Enquiry) -> None:
+async def send_enquiry_option_email(enquiry: EnquiryOut) -> None:
     school = enquiry.school
     am_location = enquiry.am_location
     pm_location = enquiry.pm_location
@@ -113,11 +116,28 @@ async def send_enquiry_option_email(enquiry: Enquiry) -> None:
         recipients=[enquiry.email],
         template_name="enquiry_option.html",
         template_body=email_body.model_dump(),
-        mail_username=school.email if school.email else "",
-        mail_password=decrypt_reversible(school.password) if school.password else "",
+        mail_username=school.email,
+        mail_password=school.password,
     )
     return None
 
+async def send_enquiry_registration_email(enquiry: EnquiryOut) -> None:
+    school = enquiry.school
+    registration_url = f"{settings.FE_URL}/registration/{enquiry.id}"
+    email_body = EnquiryRegistrationBody(
+        home_address=enquiry.home_address,
+        registration_url=registration_url,
+    )
+    print(email_body.model_dump())
+    await send_email(
+        subject="Enquiry Registration",
+        recipients=[enquiry.email],
+        template_name="enquiry_registration.html",
+        template_body=email_body.model_dump(),
+        mail_username=school.email,
+        mail_password=school.password,
+    )
+    return None
 
 async def send_email(
     subject: str,
