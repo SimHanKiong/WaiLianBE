@@ -13,7 +13,10 @@ class School(Base):
     email: Mapped[str | None]
     password: Mapped[str]
     is_final_year: Mapped[bool]
-    email_attachment_key: Mapped[str | None]
+    is_favourite: Mapped[bool]
+
+    price_list_key: Mapped[str | None]
+    rules_key: Mapped[str | None]
 
     def __repr__(self) -> str:
         return f"School: {self.name}"

@@ -13,14 +13,14 @@ from app.schemas import SchoolCreate, SchoolOut, SchoolUpdate
 
 def read_schools(db: Session, minio: MinioClient) -> list[SchoolOut]:
     schools = school_crud.read_all(db)
-    return [sign_email_attachment(school, minio) for school in schools]
+    return [sign_keys(school, minio) for school in schools]
 
 
 def read_school(db: Session, minio: MinioClient, id: UUID) -> SchoolOut | None:
     school = school_crud.read_one(db, school_crud.model.id == id)
     if not school:
         return None
-    return sign_email_attachment(school, minio)
+    return sign_keys(school, minio)
 
 
 def create_school(
@@ -29,14 +29,20 @@ def create_school(
     if school_in.password:
         school_in.password = encrypt_reversible(school_in.password)
 
-    if school_in.email_attachment_key:
+    if school_in.price_list_key:
         new_key = minio.rename(
-            school_in.email_attachment_key, "school_email_attachments"
+            school_in.price_list_key, "school_price_lists"
         )
-        school_in.email_attachment_key = new_key
+        school_in.price_list_key = new_key
+
+    if school_in.rules_key:
+        new_key = minio.rename(
+            school_in.rules_key, "school_rules"
+        )
+        school_in.rules_key = new_key
 
     school = school_crud.create(db, school_in)
-    return sign_email_attachment(school, minio)
+    return sign_keys(school, minio)
 
 
 def update_school(
@@ -49,31 +55,44 @@ def update_school(
     if school_in.password:
         school_in.password = encrypt_reversible(school_in.password)
 
-    if school_in.email_attachment_key:
+    if school_in.price_list_key:
         new_key = minio.rename(
-            school_in.email_attachment_key, "school_email_attachments"
+            school_in.price_list_key, "school_price_lists"
         )
-        school_in.email_attachment_key = new_key
+        school_in.price_list_key = new_key
 
-        if school.email_attachment_key and school.email_attachment_key != new_key:
-            minio.delete(school.email_attachment_key)
+        if school.price_list_key and school.price_list_key != new_key:
+            minio.delete(school.price_list_key)
+
+    if school_in.rules_key:
+        new_key = minio.rename(
+            school_in.rules_key, "school_rules"
+        )
+        school_in.rules_key = new_key
+
+        if school.rules_key and school.rules_key != new_key:
+            minio.delete(school.rules_key)
 
     school = school_crud.update(db, id, school_in)
-    return sign_email_attachment(school, minio)
+    return sign_keys(school, minio)
 
 
 def delete_schools(db: Session, minio: MinioClient, ids: list[UUID]) -> list[SchoolOut]:
     schools = school_crud.delete_all(db, ids)
     for school in schools:
-        if school.email_attachment_key:
-            minio.delete(school.email_attachment_key)
-    return [sign_email_attachment(school, minio) for school in schools]
+        if school.price_list_key:
+            minio.delete(school.price_list_key)
+        if school.rules_key:
+            minio.delete(school.rules_key)
+    return [sign_keys(school, minio) for school in schools]
 
 
-def sign_email_attachment(school: School, minio: MinioClient) -> SchoolOut:
-    if not school.email_attachment_key:
-        return SchoolOut.model_validate(school)
-    signed_url = minio.sign_url(school.email_attachment_key)
+def sign_keys(school: School, minio: MinioClient) -> SchoolOut:
     school_out = SchoolOut.model_validate(school)
-    school_out.email_attachment_signed_url = signed_url
+    if school.price_list_key:
+        signed_url = minio.sign_url(school.price_list_key)
+        school_out.price_list_signed_url = signed_url
+    if school.rules_key:
+        signed_url = minio.sign_url(school.rules_key)
+        school_out.rules_signed_url = signed_url
     return school_out

@@ -59,6 +59,10 @@ class StudentBase(BaseIn):
     transport_requirement: TransportRequirement
     block: str
     status: str
+    am_icon: str
+    pm_icon: str
+    is_favourite: bool
+    remark: str
     school_id: UUID
     am_location_id: UUID | None
     pm_location_id: UUID | None
@@ -75,10 +79,18 @@ class StudentCreate(BaseIn):
     nric: NRIC
     transport_start_date: date
     transport_requirement: TransportRequirement
+    am_icon: str = ""
+    pm_icon: str = ""
+    is_favourite: bool = False
+    remark: str = ""
 
 
 class StudentUpdate(BaseIn):
     block: str | None = None
+    am_icon: str | None = None
+    pm_icon: str | None = None
+    is_favourite: bool | None = None
+    remark: str | None = None
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
 

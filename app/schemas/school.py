@@ -14,7 +14,9 @@ class SchoolBase(BaseIn):
     email: EmailStr | None
     password: str
     is_final_year: bool
-    email_attachment_key: str | None
+    is_favourite: bool
+    price_list_key: str | None
+    rules_key: str | None
 
 
 class SchoolCreate(SchoolBase):
@@ -29,12 +31,15 @@ class SchoolUpdate(SchoolBase):
     email: EmailStr | None = None
     password: str | None = None
     is_final_year: bool | None = None
-    email_attachment_key: str | None = None
+    is_favourite: bool | None = None
+    price_list_key: str | None = None
+    rules_key: str | None = None
 
 
 class SchoolOut(SchoolBase, BaseOut):
-    email_attachment_signed_url: str | None = None
-
+    rules_signed_url: str | None = None
+    price_list_signed_url: str | None = None
+    
     def model_post_init(self, _) -> None:
         if self.password:
             self.password = decrypt_reversible(self.password)

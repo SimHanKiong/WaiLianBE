@@ -26,6 +26,8 @@ class Enquiry(Base):
     status: Mapped[str | None]
     is_email_sent: Mapped[bool]
     is_favourite: Mapped[bool]
+    am_icon: Mapped[str]
+    pm_icon: Mapped[str]
 
     school_id: Mapped[UUID] = mapped_column(ForeignKey("school.id", ondelete="CASCADE"))
     school: Mapped[School] = relationship()

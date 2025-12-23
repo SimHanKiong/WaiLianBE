@@ -47,6 +47,8 @@ class EnquiryBase(BaseIn):
     am_location_id: UUID | None
     pm_location_id: UUID | None
     year: int
+    am_icon: str
+    pm_icon: str
 
 
 class EnquiryCreate(BaseIn):
@@ -65,6 +67,8 @@ class EnquiryCreate(BaseIn):
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
     year: int
+    am_icon: str = ""
+    pm_icon: str = ""
 
 
 class EnquiryUpdate(BaseIn):
@@ -83,6 +87,8 @@ class EnquiryUpdate(BaseIn):
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
     year: int | None = None
+    am_icon: str | None = None
+    pm_icon: str | None = None
 
 
 class EnquiryOut(EnquiryBase, BaseOut):
