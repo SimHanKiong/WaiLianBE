@@ -1,16 +1,17 @@
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 
-from app.core.minio import MinioClient
 from app.core.config import settings
+from app.core.minio import MinioClient
 from app.schemas import (
     EnquiryOptionBody,
+    EnquiryOut,
+    EnquiryRegistrationBody,
     EnquiryRejectedBody,
     EnquirySentBody,
     EnquiryStatus,
     EnquiryToBeConfirmedBody,
-    EnquiryRegistrationBody,
-    EnquiryOut
 )
+
 
 async def send_enquiry_email(enquiry: EnquiryOut) -> bool:
     match enquiry.status:
@@ -121,6 +122,7 @@ async def send_enquiry_option_email(enquiry: EnquiryOut) -> None:
     )
     return None
 
+
 async def send_enquiry_registration_email(enquiry: EnquiryOut) -> None:
     school = enquiry.school
     registration_url = f"{settings.FE_URL}/registration/{enquiry.id}"
@@ -138,6 +140,7 @@ async def send_enquiry_registration_email(enquiry: EnquiryOut) -> None:
         mail_password=school.password,
     )
     return None
+
 
 async def send_email(
     subject: str,

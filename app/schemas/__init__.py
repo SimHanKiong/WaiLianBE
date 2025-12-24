@@ -1,10 +1,11 @@
 from app.schemas.base import BaseIn, BaseOut
+from app.schemas.bus import BusBase, BusCreate, BusOut, BusUpdate
 from app.schemas.email_body import (
     EnquiryOptionBody,
+    EnquiryRegistrationBody,
     EnquiryRejectedBody,
     EnquirySentBody,
     EnquiryToBeConfirmedBody,
-    EnquiryRegistrationBody,
 )
 from app.schemas.enquiry import (
     EnquiryBase,

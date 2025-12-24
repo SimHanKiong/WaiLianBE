@@ -1,5 +1,3 @@
-import re
-
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -30,15 +28,11 @@ def create_school(
         school_in.password = encrypt_reversible(school_in.password)
 
     if school_in.price_list_key:
-        new_key = minio.rename(
-            school_in.price_list_key, "school_price_lists"
-        )
+        new_key = minio.rename(school_in.price_list_key, "school_price_lists")
         school_in.price_list_key = new_key
 
     if school_in.rules_key:
-        new_key = minio.rename(
-            school_in.rules_key, "school_rules"
-        )
+        new_key = minio.rename(school_in.rules_key, "school_rules")
         school_in.rules_key = new_key
 
     school = school_crud.create(db, school_in)
@@ -56,18 +50,14 @@ def update_school(
         school_in.password = encrypt_reversible(school_in.password)
 
     if school_in.price_list_key:
-        new_key = minio.rename(
-            school_in.price_list_key, "school_price_lists"
-        )
+        new_key = minio.rename(school_in.price_list_key, "school_price_lists")
         school_in.price_list_key = new_key
 
         if school.price_list_key and school.price_list_key != new_key:
             minio.delete(school.price_list_key)
 
     if school_in.rules_key:
-        new_key = minio.rename(
-            school_in.rules_key, "school_rules"
-        )
+        new_key = minio.rename(school_in.rules_key, "school_rules")
         school_in.rules_key = new_key
 
         if school.rules_key and school.rules_key != new_key:

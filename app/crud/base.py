@@ -99,7 +99,7 @@ class CRUDBase(Generic[ModelType]):
     def delete_all(self, db: Session, ids: list[UUID]) -> list[ModelType]:
         if not ids:
             return []
-            
+
         query = select(self.model).where(self.model.id.in_(ids))
         db_objs = db.execute(query).scalars().all()
 

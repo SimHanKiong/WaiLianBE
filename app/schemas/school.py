@@ -39,7 +39,7 @@ class SchoolUpdate(SchoolBase):
 class SchoolOut(SchoolBase, BaseOut):
     rules_signed_url: str | None = None
     price_list_signed_url: str | None = None
-    
+
     def model_post_init(self, _) -> None:
         if self.password:
             self.password = decrypt_reversible(self.password)

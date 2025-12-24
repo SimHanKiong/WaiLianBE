@@ -60,7 +60,7 @@ async def update_enquiry(
     enquiry = EnquiryOut.model_validate(enquiry)
     if enquiry_in.is_email_sent:
         await send_enquiry_email(enquiry)
-    
+
     return enquiry
 
 
