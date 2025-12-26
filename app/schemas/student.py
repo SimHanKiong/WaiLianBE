@@ -69,8 +69,6 @@ class StudentBase(BaseIn):
     am_location_id: UUID | None
     pm_location_id: UUID | None
     parent_id: UUID
-    am_bus_id: UUID | None
-    pm_bus_id: UUID | None
 
 
 class StudentCreate(BaseIn):
@@ -87,8 +85,6 @@ class StudentCreate(BaseIn):
     pm_icon: str = ""
     is_favourite: bool = False
     remark: str = ""
-    am_bus_id: UUID | None = None
-    pm_bus_id: UUID | None = None
 
 
 class StudentUpdate(BaseIn):
@@ -99,8 +95,6 @@ class StudentUpdate(BaseIn):
     remark: str | None = None
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
-    am_bus_id: UUID | None = None
-    pm_bus_id: UUID | None = None
 
 
 # class StudentUpdate(StudentBase):
@@ -125,8 +119,6 @@ class StudentOut(StudentBase, BaseOut):
     school: SchoolOut
     am_location: LocationOut | None
     pm_location: LocationOut | None
-    am_bus: BusOut | None
-    pm_bus: BusOut | None
 
 
 class StudentOutWithParent(StudentOut):

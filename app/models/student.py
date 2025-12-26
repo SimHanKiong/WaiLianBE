@@ -51,11 +51,5 @@ class Student(Base):
     parent_id: Mapped[UUID] = mapped_column(ForeignKey("parent.id", ondelete="CASCADE"))
     parent: Mapped["Parent"] = relationship(back_populates="children")
 
-    am_bus_id: Mapped[UUID | None] = mapped_column(ForeignKey("bus.id", ondelete="SET NULL"))
-    am_bus: Mapped[Bus | None] = relationship(foreign_keys=[am_bus_id])
-
-    pm_bus_id: Mapped[UUID | None] = mapped_column(ForeignKey("bus.id", ondelete="SET NULL"))
-    pm_bus: Mapped[Bus | None] = relationship(foreign_keys=[pm_bus_id])
-
     def __repr__(self) -> str:
         return f"Student: {self.full_name}"
