@@ -1,19 +1,17 @@
 import enum
 
 from datetime import date
-from typing import TYPE_CHECKING, Annotated
+from typing import TYPE_CHECKING, Annotated, Optional
 from uuid import UUID
 
 from pydantic import AfterValidator
 
-from app.schemas.bus import BusOut
-
 
 if TYPE_CHECKING:
+    from app.schemas.location import LocationOut
     from app.schemas.parent import ParentOut
 
 from app.schemas.base import BaseIn, BaseOut
-from app.schemas.location import LocationOut
 from app.schemas.school import SchoolOut
 
 
@@ -117,9 +115,9 @@ class StudentUpdate(BaseIn):
 
 class StudentOut(StudentBase, BaseOut):
     school: SchoolOut
-    am_location: LocationOut | None
-    pm_location: LocationOut | None
+    am_location: Optional["LocationOut"]
+    pm_location: Optional["LocationOut"]
 
 
-class StudentOutWithParent(StudentOut):
+class StudentOutExtended(StudentOut):
     parent: "ParentOut"

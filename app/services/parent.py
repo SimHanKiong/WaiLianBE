@@ -4,10 +4,10 @@ from app.core.exception import IntegrityException
 from app.crud.enquiry import enquiry_crud
 from app.crud.parent import parent_crud
 from app.crud.student import student_crud
-from app.schemas import ParentBase, ParentCreate, ParentOutWithChildren, StudentBase
+from app.schemas import ParentBase, ParentCreate, ParentOut, StudentBase
 
 
-def create_parent(db: Session, parent_in: ParentCreate) -> ParentOutWithChildren:
+def create_parent(db: Session, parent_in: ParentCreate) -> ParentOut:
     enquiry = enquiry_crud.read_one(db, enquiry_crud.model.id == parent_in.enquiry_id)
     if not enquiry:
         raise IntegrityException("Enquiry")
@@ -38,4 +38,4 @@ def create_parent(db: Session, parent_in: ParentCreate) -> ParentOutWithChildren
         )
         student = student_crud.create(db, student)
 
-    return ParentOutWithChildren.model_validate(parent)
+    return ParentOut.model_validate(parent)

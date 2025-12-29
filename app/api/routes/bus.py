@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from app.api.deps import SessionDep
 from app.core.exception import MissingRecordException
 from app.schemas import BusCreate, BusOut, BusUpdate
-from app.services import bus as bus_service
+from app.services import bus_service
 
 
 router = APIRouter()

@@ -19,23 +19,26 @@ from app.schemas.location import (
     LocationBase,
     LocationCreate,
     LocationOut,
+    LocationOutExtended,
+    LocationType,
     LocationUpdate,
 )
 from app.schemas.parent import (
     ParentBase,
     ParentCreate,
     ParentOut,
-    ParentOutWithChildren,
+    ParentOutExtended,
 )
 from app.schemas.school import SchoolBase, SchoolCreate, SchoolOut, SchoolUpdate
 from app.schemas.student import (
     StudentBase,
     StudentCreate,
     StudentOut,
-    StudentOutWithParent,
+    StudentOutExtended,
     StudentUpdate,
 )
 
 
-ParentOutWithChildren.model_rebuild()
-StudentOutWithParent.model_rebuild()
+ParentOutExtended.model_rebuild()
+StudentOutExtended.model_rebuild()
+LocationOutExtended.model_rebuild()

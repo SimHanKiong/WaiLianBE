@@ -67,5 +67,5 @@ class ParentOut(ParentBase, BaseOut):
     pass
 
 
-class ParentOutWithChildren(ParentOut):
+class ParentOutExtended(ParentOut):
     children: list["StudentOut"]

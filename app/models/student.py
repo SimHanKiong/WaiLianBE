@@ -1,18 +1,16 @@
 from datetime import date
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.bus import Bus
-
 
 if TYPE_CHECKING:
+    from app.models.location import Location
     from app.models.parent import Parent
 
 from app.models.base import Base
-from app.models.location import Location
 from app.models.school import School
 
 
@@ -41,12 +39,16 @@ class Student(Base):
     am_location_id: Mapped[UUID | None] = mapped_column(
         ForeignKey("location.id", ondelete="SET NULL")
     )
-    am_location: Mapped[Location | None] = relationship(foreign_keys=[am_location_id])
+    am_location: Mapped[Optional["Location"]] = relationship(
+        foreign_keys=[am_location_id], back_populates="am_students"
+    )
 
     pm_location_id: Mapped[UUID | None] = mapped_column(
         ForeignKey("location.id", ondelete="SET NULL")
     )
-    pm_location: Mapped[Location | None] = relationship(foreign_keys=[pm_location_id])
+    pm_location: Mapped[Optional["Location"]] = relationship(
+        foreign_keys=[pm_location_id], back_populates="pm_students"
+    )
 
     parent_id: Mapped[UUID] = mapped_column(ForeignKey("parent.id", ondelete="CASCADE"))
     parent: Mapped["Parent"] = relationship(back_populates="children")

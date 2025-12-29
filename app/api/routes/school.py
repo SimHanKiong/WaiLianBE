@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from app.api.deps import MinioDep, SessionDep
 from app.core.exception import MissingRecordException
 from app.schemas import SchoolCreate, SchoolOut, SchoolUpdate
-from app.services import school as school_service
+from app.services import school_service
 
 
 router = APIRouter()

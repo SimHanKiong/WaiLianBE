@@ -18,7 +18,7 @@ def create_bus(db: Session, bus_in: BusCreate) -> BusOut:
 
 def update_bus(db: Session, id: UUID, bus_in: BusUpdate) -> BusOut | None:
     bus = bus_crud.update(db, id, bus_in)
-    return BusOut.model_validate(bus)
+    return BusOut.model_validate(bus) if bus else None
 
 
 def delete_buses(db: Session, ids: list[UUID]) -> list[BusOut]:

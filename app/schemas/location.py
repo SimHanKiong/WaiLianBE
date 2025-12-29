@@ -1,14 +1,27 @@
+import enum
+
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from app.models.route import RouteType
+from pydantic import Field, computed_field
+
 from app.schemas.base import BaseIn, BaseOut
 from app.schemas.bus import BusOut
+
+
+if TYPE_CHECKING:
+    from app.schemas.student import StudentOutExtended
+
+
+class LocationType(enum.Enum):
+    AM = "AM"
+    PM = "PM"
 
 
 class LocationBase(BaseIn):
     address: str
     time: str
-    type: RouteType
+    type: LocationType
     bus_id: UUID | None
 
 
@@ -19,9 +32,19 @@ class LocationCreate(LocationBase):
 class LocationUpdate(LocationBase):
     address: str | None = None
     time: str | None = None
-    type: RouteType | None = None
+    type: LocationType | None = None
     bus_id: UUID | None = None
 
 
 class LocationOut(LocationBase, BaseOut):
     bus: BusOut | None
+
+
+class LocationOutExtended(LocationOut):
+    am_students: list["StudentOutExtended"] = Field(exclude=True)
+    pm_students: list["StudentOutExtended"] = Field(exclude=True)
+
+    @computed_field
+    @property
+    def students(self) -> list["StudentOutExtended"]:
+        return self.am_students if self.type == LocationType.AM else self.pm_students
