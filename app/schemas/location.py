@@ -33,7 +33,7 @@ class LocationCreate(LocationBase):
 
 class LocationUpdate(LocationBase):
     address: str | None = None
-    time: str | None = None
+    time_reach: time | None = None
     type: LocationType | None = None
     bus_id: UUID | None = None
 
