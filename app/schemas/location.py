@@ -57,9 +57,8 @@ class LocationOutExtended(LocationOut):
             parents[student.parent_id].append(student)
         result = []
         for students in parents.values():
-            for i, student in enumerate(
-                sorted(students, key=lambda s: s.level, reverse=True)
-            ):
+            students.sort(key=lambda s: s.level, reverse=True)
+            for i, student in enumerate(students):
                 if len(students) == 1:
                     continue
                 student.order = i + 1
