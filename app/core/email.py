@@ -42,10 +42,10 @@ async def send_enquiry_sent_email(enquiry: EnquiryOut) -> None:
     email_body = EnquirySentBody(
         home_address=enquiry.home_address,
         pickup_address=am_location.address if am_location else "",
-        pickup_time=am_location.time if am_location else "",
+        pickup_time=am_location.time_reach if am_location else "",
         arrival_time=school.arrival_time,
         dropoff_address=pm_location.address if pm_location else "",
-        dropoff_time=pm_location.time if pm_location else "",
+        dropoff_time=pm_location.time_reach if pm_location else "",
         departure_time=school.departure_time,
         fare=enquiry.fare,
         signed_url=signed_url,
@@ -104,10 +104,10 @@ async def send_enquiry_option_email(enquiry: EnquiryOut) -> None:
     email_body = EnquiryOptionBody(
         home_address=enquiry.home_address,
         pickup_address=am_location.address if am_location else "",
-        pickup_time=am_location.time if am_location else "",
+        pickup_time=am_location.time_reach if am_location else "",
         arrival_time=school.arrival_time,
         dropoff_address=pm_location.address if pm_location else "",
-        dropoff_time=pm_location.time if pm_location else "",
+        dropoff_time=pm_location.time_reach if pm_location else "",
         departure_time=school.departure_time,
         fare=enquiry.fare,
     )

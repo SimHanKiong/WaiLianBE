@@ -22,8 +22,8 @@ router = APIRouter()
 def read_locations(
     db: SessionDep,
     type: LocationType | None = None,
-    bus_id: UUID | None = None,
-    sort_by: Annotated[list[str], Query()] = ["created_on"],
+    bus_id: Annotated[UUID | None, Query(alias="busId")] = None,
+    sort_by: Annotated[list[str], Query(alias="sortBy")] = ["created_on"],
 ):
     locations = location_service.read_locations(db, type, bus_id, sort_by)
     return locations

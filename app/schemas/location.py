@@ -1,5 +1,7 @@
 import enum
 
+from collections import defaultdict
+from datetime import time
 from typing import TYPE_CHECKING
 from uuid import UUID
 
@@ -20,7 +22,7 @@ class LocationType(enum.Enum):
 
 class LocationBase(BaseIn):
     address: str
-    time: str
+    time_reach: time
     type: LocationType
     bus_id: UUID | None
 
@@ -47,4 +49,19 @@ class LocationOutExtended(LocationOut):
     @computed_field
     @property
     def students(self) -> list["StudentOutExtended"]:
-        return self.am_students if self.type == LocationType.AM else self.pm_students
+        students = (
+            self.am_students if self.type == LocationType.AM else self.pm_students
+        )
+        parents: defaultdict[UUID, list[StudentOutExtended]] = defaultdict(list)
+        for student in students:
+            parents[student.parent_id].append(student)
+        result = []
+        for students in parents.values():
+            for i, student in enumerate(
+                sorted(students, key=lambda s: s.level, reverse=True)
+            ):
+                if len(students) == 1:
+                    continue
+                student.order = i + 1
+            result.extend(students)
+        return result

@@ -114,6 +114,7 @@ class StudentUpdate(BaseIn):
 
 
 class StudentOut(StudentBase, BaseOut):
+    order: int = 0
     school: SchoolOut
     am_location: Optional["LocationOut"]
     pm_location: Optional["LocationOut"]

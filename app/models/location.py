@@ -1,7 +1,8 @@
+from datetime import time
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from sqlalchemy import ForeignKey, UniqueConstraint
+from sqlalchemy import ForeignKey, Time, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -17,7 +18,7 @@ class Location(Base):
     __tablename__ = "location"
 
     address: Mapped[str]
-    time: Mapped[str]
+    time_reach: Mapped[time]
     type: Mapped[str]
 
     bus_id: Mapped[UUID | None] = mapped_column(
