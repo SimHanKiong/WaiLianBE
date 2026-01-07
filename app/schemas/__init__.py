@@ -26,6 +26,7 @@ from app.schemas.location import (
 from app.schemas.parent import (
     ParentBase,
     ParentCreate,
+    ParentCreateFromEnquiry,
     ParentOut,
     ParentOutExtended,
 )
@@ -33,6 +34,7 @@ from app.schemas.school import SchoolBase, SchoolCreate, SchoolOut, SchoolUpdate
 from app.schemas.student import (
     StudentBase,
     StudentCreate,
+    StudentCreateFromEnquiry,
     StudentOut,
     StudentOutExtended,
     StudentUpdate,

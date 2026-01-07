@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from app.schemas.student import StudentOut
 
 from app.schemas.base import BaseIn, BaseOut
-from app.schemas.student import StudentCreate
+from app.schemas.student import StudentCreate, StudentCreateFromEnquiry
 
 
 class ParentBase(BaseIn):
@@ -32,6 +32,23 @@ class ParentBase(BaseIn):
 
 
 class ParentCreate(BaseIn):
+    email: EmailStr
+    contact1_name: str
+    contact1_no: str
+    contact1_relationship: str
+    contact2_name: str
+    contact2_no: str
+    contact2_relationship: str
+    home_postal_code: str
+    home_unit_no: str
+    am_postal_code: str
+    pm_postal_code: str
+    under_fas: bool
+    fare: int
+    children: list[StudentCreate]
+
+
+class ParentCreateFromEnquiry(BaseIn):
     contact1_name: str
     contact1_no: str
     contact1_relationship: str
@@ -40,7 +57,7 @@ class ParentCreate(BaseIn):
     contact2_relationship: str
     under_fas: bool
     enquiry_id: UUID
-    children: list[StudentCreate]
+    children: list[StudentCreateFromEnquiry]
 
 
 class ParentUpdate(ParentBase):

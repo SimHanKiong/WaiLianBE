@@ -47,6 +47,11 @@ class TransportRequirement(enum.Enum):
     BOTH = "Both"
 
 
+class StudentStatus(enum.Enum):
+    PENDING = "Pending"
+    NEW = "New"
+
+
 class StudentBase(BaseIn):
     full_name: str
     given_name: str
@@ -58,11 +63,12 @@ class StudentBase(BaseIn):
     transport_start_date: date
     transport_requirement: TransportRequirement
     block: str
-    status: str
+    status: StudentStatus | None
     am_icon: str
     pm_icon: str
     is_favourite: bool
     remark: str
+    icon: str
     school_id: UUID
     am_location_id: UUID | None
     pm_location_id: UUID | None
@@ -79,10 +85,33 @@ class StudentCreate(BaseIn):
     nric: NRIC
     transport_start_date: date
     transport_requirement: TransportRequirement
+    block: str
+    status: StudentStatus | None
     am_icon: str = ""
     pm_icon: str = ""
     is_favourite: bool = False
     remark: str = ""
+    icon: str = ""
+    school_id: UUID
+    am_location_id: UUID
+    pm_location_id: UUID
+
+
+class StudentCreateFromEnquiry(BaseIn):
+    full_name: str
+    given_name: str
+    gender: Gender
+    level: Level
+    class_name: str
+    date_of_birth: date
+    nric: NRIC
+    transport_start_date: date
+    transport_requirement: TransportRequirement
+    am_icon: str = ""
+    pm_icon: str = ""
+    is_favourite: bool = False
+    remark: str = ""
+    icon: str = ""
 
 
 class StudentUpdate(BaseIn):
@@ -91,6 +120,7 @@ class StudentUpdate(BaseIn):
     pm_icon: str | None = None
     is_favourite: bool | None = None
     remark: str | None = None
+    icon: str | None = None
     am_location_id: UUID | None = None
     pm_location_id: UUID | None = None
 

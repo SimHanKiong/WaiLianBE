@@ -27,11 +27,12 @@ class Student(Base):
     transport_start_date: Mapped[date]
     transport_requirement: Mapped[str]
     block: Mapped[str]
-    status: Mapped[str]
+    status: Mapped[str | None]
     am_icon: Mapped[str]
     pm_icon: Mapped[str]
     is_favourite: Mapped[bool]
     remark: Mapped[str]
+    icon: Mapped[str]
 
     school_id: Mapped[UUID] = mapped_column(ForeignKey("school.id", ondelete="CASCADE"))
     school: Mapped[School] = relationship()
