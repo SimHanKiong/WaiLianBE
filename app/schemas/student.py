@@ -93,8 +93,6 @@ class StudentCreate(BaseIn):
     remark: str = ""
     icon: str = ""
     school_id: UUID
-    am_location_id: UUID
-    pm_location_id: UUID
 
 
 class StudentCreateFromEnquiry(BaseIn):
