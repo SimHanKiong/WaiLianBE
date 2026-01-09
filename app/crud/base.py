@@ -7,7 +7,7 @@ from sqlalchemy import asc, desc, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.core.exception import IntegrityException, UniqueViolationException
+from app.core.exception import IntegrityException
 from app.models import Base
 
 
@@ -58,12 +58,9 @@ class CRUDBase(Generic[ModelType]):
 
         try:
             db.add(db_obj)
-            db.commit()
-            db.refresh(db_obj)
+            db.flush()
             return db_obj
         except IntegrityError:
-            raise IntegrityException(model_name=self.model.__name__)
-        except UniqueViolationException:
             raise IntegrityException(model_name=self.model.__name__)
 
     def update(
@@ -88,12 +85,9 @@ class CRUDBase(Generic[ModelType]):
 
         try:
             db.add(db_obj)
-            db.commit()
-            db.refresh(db_obj)
+            db.flush()
             return db_obj
         except IntegrityError:
-            raise IntegrityException(model_name=self.model.__name__)
-        except UniqueViolationException:
             raise IntegrityException(model_name=self.model.__name__)
 
     def delete_all(self, db: Session, ids: list[UUID]) -> list[ModelType]:
@@ -105,7 +99,7 @@ class CRUDBase(Generic[ModelType]):
 
         for db_obj in db_objs:
             db.delete(db_obj)
-        db.commit()
+        db.flush()
 
         return db_objs
 
@@ -117,5 +111,5 @@ class CRUDBase(Generic[ModelType]):
             return None
 
         db.delete(db_obj)
-        db.commit()
+        db.flush()
         return db_obj

@@ -3,18 +3,10 @@ from fastapi import HTTPException, Request, status
 from app.core.exception import (
     IntegrityException,
     MissingRecordException,
-    UniqueViolationException,
 )
 
 
 def integrity_error_handler(_: Request, e: IntegrityException):
-    raise HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        detail=str(e),
-    )
-
-
-def unique_violation_error_handler(_: Request, e: UniqueViolationException):
     raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST,
         detail=str(e),

@@ -10,7 +10,12 @@ from app.core.minio import MinioClient
 
 def get_db() -> Generator[Session, None, None]:
     with Session(engine, expire_on_commit=False) as session:
-        yield session
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
 
 
 def get_minio() -> MinioClient:
