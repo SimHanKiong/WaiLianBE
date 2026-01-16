@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy.orm import Session
 
 from app.core.exception import IntegrityException
@@ -10,9 +12,18 @@ from app.schemas import (
     ParentCreate,
     ParentCreateFromEnquiry,
     ParentOut,
+    ParentOutExtended,
     StudentBase,
+    StudentStatus,
 )
-from app.schemas.student import StudentStatus
+from app.schemas.parent import ParentUpdate
+
+
+def read_parent(db: Session, parent_id: UUID) -> ParentOutExtended | None:
+    parent = parent_crud.read_one(db, parent_crud.model.id == parent_id)
+    if not parent:
+        return None
+    return ParentOutExtended.model_validate(parent)
 
 
 def create_parent(db: Session, parent_in: ParentCreate) -> ParentOut:
@@ -73,5 +84,43 @@ def create_parent_from_enquiry(
             parent_id=parent.id,
         )
         student_crud.create(db, student)
+
+    return ParentOut.model_validate(parent)
+
+
+def update_parent(db: Session, id: UUID, parent_in: ParentUpdate) -> ParentOut | None:
+    parent_dict = parent_in.model_dump(exclude_unset=True, exclude={"children"})
+
+    if parent_in.home_postal_code:
+        parent_dict["home_address"] = get_address(parent_in.home_postal_code)
+    if parent_in.am_postal_code:
+        parent_dict["am_address"] = get_address(parent_in.am_postal_code)
+    if parent_in.pm_postal_code:
+        parent_dict["pm_address"] = get_address(parent_in.pm_postal_code)
+    parent_dict["enquiry_id"] = None
+
+    parent = parent_crud.update(db, id, parent_dict)
+    if not parent:
+        return None
+
+    children_ids = set([child.id for child in parent.children])
+
+    for child_in in parent_in.children:
+        if child_in.id:
+            student_crud.update(db, child_in.id, child_in)
+            children_ids.remove(child_in.id)
+        else:
+            student = StudentBase(
+                **child_in.model_dump(),
+                parent_id=parent.id,
+                am_icon="",
+                pm_icon="",
+                is_favourite=False,
+                remark="",
+                icon="",
+            )
+            student_crud.create(db, student)
+
+    student_crud.delete_all(db, list(children_ids))
 
     return ParentOut.model_validate(parent)

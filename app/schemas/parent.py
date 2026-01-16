@@ -8,7 +8,12 @@ if TYPE_CHECKING:
     from app.schemas.student import StudentOut
 
 from app.schemas.base import BaseIn, BaseOut
-from app.schemas.student import StudentCreate, StudentCreateFromEnquiry
+from app.schemas.student import (
+    StudentCreate,
+    StudentCreateFromEnquiry,
+    StudentOut,
+    StudentUpdateFromParent,
+)
 
 
 class ParentBase(BaseIn):
@@ -60,7 +65,7 @@ class ParentCreateFromEnquiry(BaseIn):
     children: list[StudentCreateFromEnquiry]
 
 
-class ParentUpdate(ParentBase):
+class ParentUpdate(BaseIn):
     email: EmailStr | None = None
     contact1_name: str | None = None
     contact1_no: str | None = None
@@ -70,14 +75,11 @@ class ParentUpdate(ParentBase):
     contact2_relationship: str | None = None
     home_postal_code: str | None = None
     home_unit_no: str | None = None
-    home_address: str | None = None
     am_postal_code: str | None = None
-    am_address: str | None = None
     pm_postal_code: str | None = None
-    pm_address: str | None = None
     under_fas: bool | None = None
     fare: int | None = None
-    enquiry_id: UUID | None = None
+    children: list[StudentUpdateFromParent]
 
 
 class ParentOut(ParentBase, BaseOut):

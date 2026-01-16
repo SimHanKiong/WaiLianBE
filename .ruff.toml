@@ -1,7 +1,10 @@
 exclude = ["alembic/"]
 
 [lint]
-select = ["I"]
+select = ["I", "F401", "F841"]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]
 
 [lint.isort]
 # Group first-party imports separately

@@ -93,8 +93,8 @@ class StudentCreate(BaseIn):
     remark: str = ""
     icon: str = ""
     school_id: UUID
-    am_location_id: UUID | None = None
-    pm_location_id: UUID | None = None
+    am_location_id: UUID | None
+    pm_location_id: UUID | None
 
 
 class StudentCreateFromEnquiry(BaseIn):
@@ -125,22 +125,22 @@ class StudentUpdate(BaseIn):
     pm_location_id: UUID | None = None
 
 
-# class StudentUpdate(StudentBase):
-#     full_name: str | None = None
-#     given_name: str | None = None
-#     gender: StudentGender | None = None
-#     level: Annotated[int, AfterValidator(validate_level)] | None = None
-#     class_name: str | None = None
-#     date_of_birth: date | None = None
-#     nric: Annotated[str, AfterValidator(validate_nric)] | None = None
-#     transport_start_date: date | None = None
-#     transport_requirement: TransportRequirement | None = None
-#     block: str | None = None
-#     status: str | None = None
-#     school_id: UUID | None = None
-#     am_location_id: UUID | None = None
-#     pm_location_id: UUID | None = None
-#     parent_id: UUID | None = None
+class StudentUpdateFromParent(BaseIn):
+    id: UUID | None = None
+    full_name: str | None = None
+    given_name: str | None = None
+    gender: Gender | None = None
+    level: Level | None = None
+    class_name: str | None = None
+    date_of_birth: date | None = None
+    nric: NRIC | None = None
+    transport_start_date: date | None = None
+    transport_requirement: TransportRequirement | None = None
+    block: str | None = None
+    status: StudentStatus | None = None
+    school_id: UUID | None = None
+    am_location_id: UUID | None = None
+    pm_location_id: UUID | None = None
 
 
 class StudentOut(StudentBase, BaseOut):

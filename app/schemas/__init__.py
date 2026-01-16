@@ -29,6 +29,7 @@ from app.schemas.parent import (
     ParentCreateFromEnquiry,
     ParentOut,
     ParentOutExtended,
+    ParentUpdate,
 )
 from app.schemas.school import SchoolBase, SchoolCreate, SchoolOut, SchoolUpdate
 from app.schemas.student import (
@@ -37,7 +38,9 @@ from app.schemas.student import (
     StudentCreateFromEnquiry,
     StudentOut,
     StudentOutExtended,
+    StudentStatus,
     StudentUpdate,
+    StudentUpdateFromParent,
 )
 
 

@@ -1,7 +1,7 @@
-from app.models.base import Base  # noqa: F401
-from app.models.bus import Bus  # noqa: F401
-from app.models.enquiry import Enquiry  # noqa: F401
-from app.models.location import Location  # noqa: F401
-from app.models.parent import Parent  # noqa: F401
-from app.models.school import School  # noqa: F401
-from app.models.student import Student  # noqa: F401
+from app.models.base import Base
+from app.models.bus import Bus
+from app.models.enquiry import Enquiry
+from app.models.location import Location
+from app.models.parent import Parent
+from app.models.school import School
+from app.models.student import Student
